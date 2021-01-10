@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+#header {
+  background-color: lightblue;
+}
+
+#interface-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+#projects-display {
+  background-color: rgb(60, 202, 60);
+  width: 25%;
+}
+
+#todos-display {
+  background-color: rgb(247, 127, 127);
+  width: 75%;
+}
+
+#main-title {
+  margin: 0;
+  display: block;
+}
