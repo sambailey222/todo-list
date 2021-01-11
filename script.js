@@ -49,15 +49,26 @@ function addProject(name) {
 
 function displayProjects() {
   projectsList.innerHTML = "";
-  projects.forEach(function(project) {
+  for (let i = 0; i < projects.length; i++) {
     const newProjectTitle = document.createElement("h3");
-    newProjectTitle.innerHTML = project.title;
-    newProjectTitle.addEventListener("click", )
+    newProjectTitle.id = i;
+    newProjectTitle.innerHTML = projects[i].title;
+    newProjectTitle.addEventListener("click", (e) => displayTodos(e))
     projectsList.appendChild(newProjectTitle);
-  })
+  }
 }
 
-
+function displayTodos(e) {
+  // change the value of each project's active property so only clicked project is active
+  // may be possible to improve/avoid this loop by just replacing the tab? think about this later
+  for (let i = 0; i < projects.length; i++) {
+    projects[i].active = (i === parseInt(e.target.id));
+    console.log(projects[i].active);
+  }
+  const todoList = document.getElementById("todo-list");
+  todoList.innerHTML = "";
+  // lopp through corresponding Todo items and build a grid item for each one
+}
 
 projectBtn.addEventListener("click", () => addProject("Work"));
 
@@ -72,6 +83,6 @@ projectBtn.addEventListener("click", () => addProject("Work"));
   // all other projects' active property should be set to "false"
   // the project's active status should be changed to "true"
   // the right hand menu should change to a new "tab"
-  // that tab should display all of the todos stored in that project's items list.
+  // that tab should display all of the todos stored in the active project's items list.
 
 

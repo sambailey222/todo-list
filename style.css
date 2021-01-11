@@ -37,3 +37,7 @@ body {
   margin: 0;
   display: block;
 }
+
+.grid-container {
+  display: grid;
+}
