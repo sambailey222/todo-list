@@ -8,6 +8,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="normalize.css">
   <link href="style.css" rel="stylesheet">
 </head>
@@ -24,18 +25,63 @@
       <div id="projects-list"></div>
     </div>
     <div id="todos-display">
-      <h2>Todos</h2>
-      <button>Add Todo</button>
+      <div class="content-wrapper">
+      <h2 class="display-inline">Todos</h2>
+      <button class="todo-button">Add Todo</button>
       <div id="todo-list">
-        <ul class="grid-container">
-          <li>Sweet Child</li>
-          <li>Hare krishna</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+        <!-- <div class="container">
+          <div class= "row">
+          <li>
+            <img class="checkbox col" src="images/blank-check-box.svg">
+            <div class="task-title col">Go to Sweet Rama's House</div>
+            <div class="dueDate col">Due Date</div>
+          </li>
+          </div> -->
+          <div class="container">
+            <div class="row">
+              <div class="col-8"></div>
+              <div class="col-4">Due Date</div>
+            </div>
+            <div class="row todo-item">
+              <div class="col-1 center">
+                <img class="checkbox" src="images/blank-check-box.svg" alt="check">
+              </div>
+              <div class="col-7 col-text">
+                Todo Task
+              </div>
+              <div class="col-2 col-text">
+                11/02/1993
+              </div>
+              <div class="col-1 col-text">
+                <img class="edit" src="images/edit.svg" alt="edit">
+              </div>
+              <div class="col-1">
+                <img class="trash" src="images/trash-can.svg" alt="delete">
+              </div>
+            </div> <!-- /ROW -->
+            <div class="row todo-item">
+              <div class="col-1 center">
+                <img class="checkbox" src="images/blank-check-box.svg" alt="check">
+              </div>
+              <div class="col-7 col-text">
+                Todo Task
+              </div>
+              <div class="col-2 col-text">
+                11/02/1993
+              </div>
+              <div class="col-1 col-text">
+                <img class="edit" src="images/edit.svg" alt="edit">
+              </div>
+              <div class="col-1">
+                <img class="trash" src="images/trash-can.svg" alt="delete">
+              </div>
+          </div> <!-- /CONTAINER -->
+      </div> <!-- /TODO LIST -->
+    </div> <!-- /TODOS DISPLAY -->
+  </div> <!-- /INTERFACE CONTAINER -->
+ 
 
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
   <script src="script.js"></script>
 </body>
 

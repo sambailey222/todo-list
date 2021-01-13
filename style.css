@@ -29,7 +29,7 @@ body {
 }
 
 #todos-display {
-  background-color: rgb(247, 127, 127);
+  /* background-color: rgb(247, 127, 127); */
   width: 75%;
 }
 
@@ -40,4 +40,47 @@ body {
 
 .grid-container {
   display: grid;
+}
+
+.checkbox {
+  width: 1.5em;
+  padding-top: 1px;
+}
+
+.todo-item {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.content-wrapper {
+  width: 80%;
+  margin: auto;
+}
+
+.center {
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.col-text {
+  padding-top: 2px;
+}
+
+.trash {
+  width: 1.5em;
+}
+
+.edit {
+  width: 1.5em;
+  padding-bottom: 4px;
+}
+
+.display-inline {
+  display:inline;
+}
+
+.todo-button {
+  float: right;
+  margin-top: 10px;
 }
