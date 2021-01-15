@@ -27,7 +27,9 @@
     <div id="todos-display">
       <div class="content-wrapper">
       <h2 class="display-inline">Todos</h2>
-      <button class="todo-button">Add Todo</button>
+      <button id="add-todo" class="todo-button">Add Todo</button>
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
       <div id="todo-list">
         <!-- <div class="container">
           <div class= "row">
@@ -79,9 +81,31 @@
       </div> <!-- /TODO LIST -->
     </div> <!-- /TODOS DISPLAY -->
   </div> <!-- /INTERFACE CONTAINER -->
- 
+ <!-- Modal -->
+<!-- The Modal -->
+<div id="todoModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="custom-flex">
+      <h2>Add todo</h2>
+      <span class="close">&times;</span>
+    </div>
+    <form>
+      <label for="title">Task Name:</label><br>
+      <input type="text" id="title" name="title"><br>
+      <label for="description">Description:</label><br>
+      <textarea type="text" id="description" name="description" rows="4"></textarea><br>
+      <label for="description">Date:</label><br>
+      <input type="text" id="date" name="date"><br>
+      <button>Save</button>
+    </form>
+  </div>
+
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <script src="node_modules/datepicker/src/"></script>
   <script src="script.js"></script>
 </body>
 

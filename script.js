@@ -45,6 +45,7 @@ function addProject(name) {
   const newProject = new Project(name);
   // TEMPORARY TEST TODO ADDED
   newProject.items.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
+  newProject.items.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
   projects.push(newProject);
   this.displayProjects();
 }
@@ -64,33 +65,33 @@ function displayProjects() {
 function displayTodos(e, project) {
   // change the value of each project's active property so only clicked project is active
   // may be possible to improve/avoid this loop by just replacing the tab? think about this later
-  for (let i = 0; i < projects.length; i++) {
-    projects[i].active = (i === parseInt(e.target.id));
-    console.log(projects[i].active);
-  }
+  // for (let i = 0; i < projects.length; i++) {
+  //   projects[i].active = (i === parseInt(e.target.id));
+  //   console.log(projects[i].active);
+  // }
   const todoList = document.getElementById("todo-list");
   todoList.innerHTML = "";
+  
+  // build top row with "due date" column
+  const container = document.createElement("div");
+  container.classList.add("container");
+  todoList.appendChild(container);
+
+  const topRow = document.createElement("div");
+  topRow.classList.add("row");
+  container.appendChild(topRow);
+
+  const col8 = document.createElement("div");
+  col8.classList.add("col-8");
+  topRow.appendChild(col8);
+
+  const col4 = document.createElement("div");
+  col4.classList.add("col-4");
+  col4.innerHTML = "Due Date";
+  topRow.appendChild(col4);
   // lopp through corresponding Todo items and build a grid item for each one
   for (let i = 0; i < project.items.length; i++) {
-    console.log(project.items);
-    console.log(project.items.length);
-    const container = document.createElement("div");
-    container.classList.add("container");
-    todoList.appendChild(container);
-
-    const topRow = document.createElement("div");
-    topRow.classList.add("row");
-    container.appendChild(topRow);
-
-    const col8 = document.createElement("div");
-    col8.classList.add("col-8");
-    topRow.appendChild(col8);
-
-    const col4 = document.createElement("div");
-    col4.classList.add("col-4");
-    col4.innerHTML = "Due Date";
-    topRow.appendChild(col4);
-    // BEGIN ACTUAL TODO DISPLAY
+    
     const todoItem = document.createElement("div");
     todoItem.classList.add("row", "todo-item");
     container.appendChild(todoItem);
@@ -112,7 +113,7 @@ function displayTodos(e, project) {
 
     const todoDate = document.createElement("div");
     todoDate.classList.add("col-2", "col-text");
-    todoDate.innerHTML = project.items[i].date;
+    todoDate.innerHTML = project.items[i].dueDate;
     todoItem.appendChild(todoDate);
 
     const editColumn = document.createElement("div");
@@ -153,4 +154,42 @@ projectBtn.addEventListener("click", () => addProject("Work"));
   // the right hand menu should change to a new "tab"
   // that tab should display all of the todos stored in the active project's items list.
 
+// when I click on the Add Todo button within a project
+  // a modal window should pop up
+  // within that modal window I should be able to add the name, dueDate, notes relating to a Todo
+  // there should be a save button and a close button
+  // when I click save, the todo should be stored in the relevant array and displayed to the page
+  // if I fail to add a title before clicking save, I should be alerted that I cannot save before adding one.
 
+
+ 
+
+
+
+
+
+  // Get the modal
+var modal = document.getElementById("todoModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("add-todo");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
