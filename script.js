@@ -17,7 +17,7 @@ class Todo {
 class Project {
   constructor (title) {
     this.title = title;
-    this.items = [];
+    this.todos = [];
     this.active = false;
   }
 }
@@ -29,8 +29,8 @@ class Project {
 // const TodoWork1 = new Todo("log in", "Work");
 // console.log(TodoWork1);
 
-// work.items.push(TodoWork1);
-// console.log(work.items);
+// work.todos.push(TodoWork1);
+// console.log(work.todos);
 // console.log(work);
 
 const projectBtn = document.getElementById("add-project");
@@ -44,11 +44,13 @@ const projects = [];
 function addProject(name) {
   const newProject = new Project(name);
   // TEMPORARY TEST TODO ADDED
-  newProject.items.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
-  newProject.items.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
+  newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
+  newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
   projects.push(newProject);
   this.displayProjects();
 }
+
+let activeProject = "";
 
 function displayProjects() {
   projectsList.innerHTML = "";
@@ -57,18 +59,20 @@ function displayProjects() {
     newProjectTitle.id = i;
     newProjectTitle.innerHTML = projects[i].title;
     console.log(projects[i]);
-    newProjectTitle.addEventListener("click", (e) => displayTodos(e, projects[i]));
+    newProjectTitle.addEventListener("click", () => displayTodos(projects[i]));
     projectsList.appendChild(newProjectTitle);
   }
 }
 
-function displayTodos(e, project) {
+function displayTodos(project) {
   // change the value of each project's active property so only clicked project is active
   // may be possible to improve/avoid this loop by just replacing the tab? think about this later
   // for (let i = 0; i < projects.length; i++) {
   //   projects[i].active = (i === parseInt(e.target.id));
   //   console.log(projects[i].active);
   // }
+
+  activeProject = project;
   const todoList = document.getElementById("todo-list");
   todoList.innerHTML = "";
   
@@ -89,8 +93,8 @@ function displayTodos(e, project) {
   col4.classList.add("col-4");
   col4.innerHTML = "Due Date";
   topRow.appendChild(col4);
-  // lopp through corresponding Todo items and build a grid item for each one
-  for (let i = 0; i < project.items.length; i++) {
+  // lopp through corresponding Todo todos and build a grid item for each one
+  for (let i = 0; i < project.todos.length; i++) {
     
     const todoItem = document.createElement("div");
     todoItem.classList.add("row", "todo-item");
@@ -108,12 +112,12 @@ function displayTodos(e, project) {
 
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("col-7", "col-text");
-    todoTitle.innerHTML = project.items[i].title;
+    todoTitle.innerHTML = project.todos[i].title;
     todoItem.appendChild(todoTitle);
 
     const todoDate = document.createElement("div");
     todoDate.classList.add("col-2", "col-text");
-    todoDate.innerHTML = project.items[i].dueDate;
+    todoDate.innerHTML = project.todos[i].dueDate;
     todoItem.appendChild(todoDate);
 
     const editColumn = document.createElement("div");
@@ -152,7 +156,7 @@ projectBtn.addEventListener("click", () => addProject("Work"));
   // all other projects' active property should be set to "false"
   // the project's active status should be changed to "true"
   // the right hand menu should change to a new "tab"
-  // that tab should display all of the todos stored in the active project's items list.
+  // that tab should display all of the todos stored in the active project's todos list.
 
 // when I click on the Add Todo button within a project
   // a modal window should pop up
@@ -162,8 +166,36 @@ projectBtn.addEventListener("click", () => addProject("Work"));
   // if I fail to add a title before clicking save, I should be alerted that I cannot save before adding one.
 
 
- 
+// first write a function that simply logs the input values when you press save
+// think bootstrap is fucking with this process and clearing the console.
+// may need to change class names to get away from bootstrap??
+let title = "";
+let desc = "";
+let date = "";
 
+
+// need to know which project to save it to (activeProject)
+// need to take the information stored in the form and create a new Todo with it
+// the  push that todo to the project todos array
+// then display the todos again
+function createTodo() {
+  let todoTitle = document.getElementById("title");
+  let todoDesc = document.getElementById("description");
+  let todoDate = document.getElementById("date");
+  // title = todoTitle.value;
+  // desc = todoDesc.value;
+  // date = todoDate.value;
+  const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
+  console.log(newTodo);
+  activeProject.todos.push(newTodo);
+  displayTodos(activeProject);
+}
+
+const saveBTN = document.getElementById("save");
+
+saveBTN.addEventListener("click", () => createTodo());
+ 
+// need function that sets the global active project when you click on a project name
 
 
 
