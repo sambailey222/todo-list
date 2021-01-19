@@ -33,7 +33,7 @@ class Project {
 // console.log(work.todos);
 // console.log(work);
 
-const projectBtn = document.getElementById("add-project");
+
 const projectsList = document.getElementById("projects-list");
 
 const projects = [];
@@ -41,7 +41,45 @@ const projects = [];
 // console.log(projects);
 
 
+
+ 
+    // Get the modal
+const projectsModal = document.getElementById("projectsModal");
+
+// Get the button that opens the modal
+const projectBtn = document.getElementById("add-project");
+
+// Get the <span> element that closes the modal
+const projectClose = document.getElementById("projectModalClose");
+
+// When the user clicks on the button, open the modal
+// btn.onclick = function() {
+//   todoModal.style.display = "block";
+// }
+
+// When the user clicks on <span> (x), close the modal
+projectClose.onclick = function() {
+  projectsModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.addEventListener("click", function(event) {
+  if (event.target == projectsModal) {
+    projectsModal.style.display = "none";
+  }
+});
+
+projectBtn.addEventListener("click", function() {  
+  projectsModal.style.display = "block";});
+  
+
+const projectTitle = document.getElementById("projectTitle");
+
+const projectSaveBtn = document.getElementById("projectSave");
+projectSaveBtn.addEventListener("click", () => addProject(projectTitle.value));
+
 function addProject(name) {
+  console.log(name);
   const newProject = new Project(name);
   // TEMPORARY TEST TODO ADDED
   newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
@@ -142,7 +180,14 @@ function displayTodos(project) {
   }
 }
 
-projectBtn.addEventListener("click", () => addProject("Work"));
+// projectBtn.addEventListener("click", () => addProject("Work"));
+// projectBtn.addEventListener("click", () => addProject("Work"));
+
+// need to write a function that creates a modal for project name input
+// when click save, add project is run.
+
+
+
 
 
 // when I push the new project button, 
@@ -201,27 +246,27 @@ saveBTN.addEventListener("click", () => createTodo());
 
 
   // Get the modal
-var modal = document.getElementById("todoModal");
+var todoModal = document.getElementById("todoModal");
 
 // Get the button that opens the modal
 var btn = document.getElementById("add-todo");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementById("modalClose");
 
 // When the user clicks on the button, open the modal
 btn.onclick = function() {
-  modal.style.display = "block";
+  todoModal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  modal.style.display = "none";
+  todoModal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+window.addEventListener("click", function(event) {
+  if (event.target == todoModal) {
+    todoModal.style.display = "none";
   }
-}
+});

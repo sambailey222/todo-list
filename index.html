@@ -80,15 +80,15 @@
       </div> <!-- /TODO LIST -->
     </div> <!-- /TODOS DISPLAY -->
   </div> <!-- /INTERFACE CONTAINER -->
+
  <!-- Modal -->
 <!-- The Modal -->
 <div id="todoModal" class="modal">
-
   <!-- Modal content -->
   <div class="modal-content">
     <div class="custom-flex">
       <h2>Add todo</h2>
-      <span class="close">&times;</span>
+      <span id ="modalClose" class="close">&times;</span>
     </div>
     <form>
       <label for="title">Task Name:</label><br>
@@ -99,6 +99,21 @@
       <input type="text" id="date" name="date"><br>
       <button type="button" id="save">Save</button>
       <button type="button">pep</button>
+    </form>
+  </div>
+</div>
+  <!-- The Projects Modal -->
+<div id="projectsModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="custom-flex">
+      <h2>Add Project</h2>
+      <span id ="projectModalClose" class="close">&times;</span>
+    </div>
+    <form>
+      <label for="projectTitle">Project Name:</label><br>
+      <input type="text" id="projectTitle" name="projectTitle"><br>
+      <button type="button" id="projectSave">Save</button>
     </form>
   </div>
 
