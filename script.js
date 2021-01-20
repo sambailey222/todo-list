@@ -12,6 +12,14 @@ class Todo {
     this.dueDate = dueDate;
     // this.notes = notes;
   }
+
+  addTodoToProject() {
+    activeProject.todos.push(this);
+  }
+
+  removeTodo() {
+
+  }
 }
 
 class Project {
@@ -20,6 +28,26 @@ class Project {
     this.todos = [];
     this.active = false;
   }
+
+  addProjectToList() {
+    projects.push(this);
+    displayProjects();
+  }
+
+  // is there any benefit to using class methods here? 
+  // Still going to need an external function that creates the new class and then accesses its methods. 
+  // May as well have one external function that does it all?
+  // May be more elegant design to have the methods though
+  // a method should surely be something that is done to the individual object, rather than all of them.
+  // here is where functionality should be stored:
+  // add to projects list - within project DONE
+  // remove project - either within or without project
+  // add todo to project- within todo DONE
+  // edit todo - within todo
+  // delete - either within or without
+  // toggle check (complete) todo - within todo (possibly as a property of the object?)
+  // if decide against, will need to take addProject back out (or restore from last push);
+
 }
 
 // ------ INITIAL SETUP OF DEFAULTS ------ //
@@ -31,7 +59,7 @@ let activeProject = "";
 activeProject = defaultProject;
 
 const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/02/1993");
-activeProject.todos.push(defaultTodo);
+defaultTodo.addTodoToProject();
 
 const projects = [];
 projects.push(defaultProject);
@@ -67,9 +95,18 @@ window.addEventListener("click", function(event) {
 // Get the user input for project title
 const projectTitle = document.getElementById("projectTitle");
 
+function createNewProject(name) {
+  const newProject = new Project(name);
+    // TEMPORARY TEST TODOS ADDED
+    newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
+    newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
+    newProject.addProjectToList()
+    closeProjectsModal();
+}
+
 // When user clicks save, add project to projects list
 const projectSaveBtn = document.getElementById("projectSave");
-projectSaveBtn.addEventListener("click", () => addProject(projectTitle.value));
+projectSaveBtn.addEventListener("click", () => createNewProject(projectTitle.value));
 
 function closeProjectsModal() {
   projectsModal.style.display = "none";
@@ -78,16 +115,16 @@ function closeProjectsModal() {
 // -------- END ADD PROJECTS MODAL ------- //
 
 // FUNCTION TO INITIALISE NEW PROJECT OBJECT
-function addProject(name) {
-  console.log(name);
-  const newProject = new Project(name);
-  // TEMPORARY TEST TODO ADDED
-  newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
-  newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
-  projects.push(newProject);
-  this.displayProjects();
-  closeProjectsModal();
-}
+// function addProject(name) {
+//   console.log(name);
+//   const newProject = new Project(name);
+//   // TEMPORARY TEST TODO ADDED
+//   newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
+//   newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
+//   projects.push(newProject);
+//   this.displayProjects();
+//   closeProjectsModal();
+// }
 
 
 
@@ -181,10 +218,16 @@ function displayTodos(project) {
     deleteBtn.classList.add("trash");
     deleteBtn.src = "images/trash-can.svg";
     deleteBtn.alt = "delete";
+    deleteBtn.id = i;
+    deleteBtn.addEventListener("click", (e) => deleteTodo(e));
     deleteColumn.appendChild(deleteBtn);
   }
 }
 
+function deleteTodo(e) {
+activeProject.todos.splice(e.target.id, 1);
+displayTodos(activeProject);
+}
 // projectBtn.addEventListener("click", () => addProject("Work"));
 // projectBtn.addEventListener("click", () => addProject("Work"));
 
@@ -232,7 +275,7 @@ function createTodo() {
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
   console.log(newTodo);
   // save new todo into the active project
-  activeProject.todos.push(newTodo);
+  newTodo.addTodoToProject();
   displayTodos(activeProject);
   closeTodoModal();
 }
