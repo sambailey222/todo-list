@@ -22,27 +22,23 @@ class Project {
   }
 }
 
-
-// const work = new Project("Work");
-// console.log(work);
-
-// const TodoWork1 = new Todo("log in", "Work");
-// console.log(TodoWork1);
-
-// work.todos.push(TodoWork1);
-// console.log(work.todos);
-// console.log(work);
-
-
+// ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
 
+const defaultProject = new Project("Default Project");
+
+let activeProject = "";
+activeProject = defaultProject;
+
+const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/02/1993");
+activeProject.todos.push(defaultTodo);
+
 const projects = [];
-// // projects.push(work);
-// console.log(projects);
+projects.push(defaultProject);
+displayProjects();
+displayTodos(activeProject);
 
-
-
- 
+// ------ ADD PROJECT MODAL ------ //
     // Get the modal
 const projectsModal = document.getElementById("projectsModal");
 
@@ -53,9 +49,8 @@ const projectBtn = document.getElementById("add-project");
 const projectClose = document.getElementById("projectModalClose");
 
 // When the user clicks on the button, open the modal
-// btn.onclick = function() {
-//   todoModal.style.display = "block";
-// }
+projectBtn.addEventListener("click", function() {  
+  projectsModal.style.display = "block";});
 
 // When the user clicks on <span> (x), close the modal
 projectClose.onclick = function() {
@@ -69,15 +64,20 @@ window.addEventListener("click", function(event) {
   }
 });
 
-projectBtn.addEventListener("click", function() {  
-  projectsModal.style.display = "block";});
-  
-
+// Get the user input for project title
 const projectTitle = document.getElementById("projectTitle");
 
+// When user clicks save, add project to projects list
 const projectSaveBtn = document.getElementById("projectSave");
 projectSaveBtn.addEventListener("click", () => addProject(projectTitle.value));
 
+function closeProjectsModal() {
+  projectsModal.style.display = "none";
+}
+
+// -------- END ADD PROJECTS MODAL ------- //
+
+// FUNCTION TO INITIALISE NEW PROJECT OBJECT
 function addProject(name) {
   console.log(name);
   const newProject = new Project(name);
@@ -86,10 +86,12 @@ function addProject(name) {
   newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
   projects.push(newProject);
   this.displayProjects();
+  closeProjectsModal();
 }
 
-let activeProject = "";
 
+
+// DISPLAY THE PROJECTS
 function displayProjects() {
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
@@ -110,6 +112,9 @@ function displayTodos(project) {
   //   console.log(projects[i].active);
   // }
 
+
+  // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
+  // (for the benefit of the addTodo function - so it knows where to save new todo)
   activeProject = project;
   const todoList = document.getElementById("todo-list");
   todoList.innerHTML = "";
@@ -214,35 +219,23 @@ function displayTodos(project) {
 // first write a function that simply logs the input values when you press save
 // think bootstrap is fucking with this process and clearing the console.
 // may need to change class names to get away from bootstrap??
-let title = "";
-let desc = "";
-let date = "";
 
 
-// need to know which project to save it to (activeProject)
-// need to take the information stored in the form and create a new Todo with it
-// the  push that todo to the project todos array
-// then display the todos again
+
+// CREATE A NEW TODO FROM USER INPUT AND REDISPLAY ALL TODOS
 function createTodo() {
+  // get user input value boxes
   let todoTitle = document.getElementById("title");
   let todoDesc = document.getElementById("description");
   let todoDate = document.getElementById("date");
-  // title = todoTitle.value;
-  // desc = todoDesc.value;
-  // date = todoDate.value;
+  // create new todo with user input
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
   console.log(newTodo);
+  // save new todo into the active project
   activeProject.todos.push(newTodo);
   displayTodos(activeProject);
+  closeTodoModal();
 }
-
-const saveBTN = document.getElementById("save");
-
-saveBTN.addEventListener("click", () => createTodo());
- 
-// need function that sets the global active project when you click on a project name
-
-
 
 
   // Get the modal
@@ -270,3 +263,12 @@ window.addEventListener("click", function(event) {
     todoModal.style.display = "none";
   }
 });
+
+// get todo save button
+const todoSaveBtn = document.getElementById("todoSave");
+// create new todo from user input when button clicked
+todoSaveBtn.addEventListener("click", () => createTodo());
+
+function closeTodoModal() {
+  todoModal.style.display = "none";
+}
