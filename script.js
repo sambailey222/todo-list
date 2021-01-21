@@ -223,6 +223,25 @@ function displayTodos(project) {
     editBtn.classList.add("edit");
     editBtn.src = "images/edit.svg";
     editBtn.alt = "edit";
+    editBtn.addEventListener("click", function() {
+      openEditModal();
+      const editTodoTitle = document.getElementById("editTodoTitle");
+      editTodoTitle.value = activeProject.todos[i].title;
+      const editTodoDescription = document.getElementById("editTodoDescription");
+      editTodoDescription.value = activeProject.todos[i].description;
+      const editTodoDate = document.getElementById("editTodoDate");
+      editTodoDate.value = activeProject.todos[i].dueDate;
+
+      const editTodoSave = document.getElementById("editTodoSave");
+      editTodoSave.addEventListener("click", function() {
+        activeProject.todos[i].title = editTodoTitle.value;
+        activeProject.todos[i].description = editTodoDescription.value;
+        activeProject.todos[i].dueDate = editTodoDate.value;
+        closeEditModal()
+        displayTodos(activeProject);
+        //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
+      })
+    })
     editColumn.appendChild(editBtn);
 
     const deleteColumn = document.createElement("div");
@@ -249,7 +268,30 @@ displayTodos(activeProject);
 // need to write a function that creates a modal for project name input
 // when click save, add project is run.
 
+// ------ EDIT TODO MODAL ------ //
+    // Get the modal
+    const editTodoModal = document.getElementById("editTodoModal");
+    
+    // Get the <span> element that closes the modal
+    const editTodoModalClose = document.getElementById("editTodoModalClose");
 
+    function openEditModal() {
+      editTodoModal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    function closeEditModal() {
+      editTodoModal.style.display = "none";
+      console.log("fired");
+    }
+    editTodoModalClose.onclick = () => closeEditModal();
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.addEventListener("click", function(event) {
+      if (event.target == editTodoModal) {
+        editTodoModal.style.display = "none";
+      }
+    });
 
 
 
@@ -283,9 +325,9 @@ displayTodos(activeProject);
 // CREATE A NEW TODO FROM USER INPUT AND REDISPLAY ALL TODOS
 function createTodo() {
   // get user input value boxes
-  let todoTitle = document.getElementById("title");
-  let todoDesc = document.getElementById("description");
-  let todoDate = document.getElementById("date");
+  let todoTitle = document.getElementById("addTodoTitle");
+  let todoDesc = document.getElementById("addTodoDescription");
+  let todoDate = document.getElementById("addTodoDate");
   // create new todo with user input
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
   console.log(newTodo);
@@ -295,9 +337,12 @@ function createTodo() {
   closeTodoModal();
 }
 
+// ------ THE EDIT TODO MODAL ----- //
 
+
+// ----- THE ADD TODO MODAL ----- //
   // Get the modal
-var todoModal = document.getElementById("todoModal");
+var todoModal = document.getElementById("addTodoModal");
 
 // Get the button that opens the modal
 var btn = document.getElementById("add-todo");
@@ -306,9 +351,10 @@ var btn = document.getElementById("add-todo");
 var span = document.getElementById("modalClose");
 
 // When the user clicks on the button, open the modal
-btn.onclick = function() {
+function openTodoModal() {
   todoModal.style.display = "block";
 }
+btn.onclick = () => openTodoModal();
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
@@ -323,7 +369,7 @@ window.addEventListener("click", function(event) {
 });
 
 // get todo save button
-const todoSaveBtn = document.getElementById("todoSave");
+const todoSaveBtn = document.getElementById("addTodoSave");
 // create new todo from user input when button clicked
 todoSaveBtn.addEventListener("click", () => createTodo());
 

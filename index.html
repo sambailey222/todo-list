@@ -82,22 +82,41 @@
   </div> <!-- /INTERFACE CONTAINER -->
 
  <!-- Modal -->
-<!-- The Modal -->
-<div id="todoModal" class="modal">
+<!-- The Add Todo Modal -->
+<div id="addTodoModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <div class="custom-flex">
-      <h2>Add todo</h2>
+      <h2 id="todoModalTitle">Add todo</h2>
       <span id ="modalClose" class="close">&times;</span>
     </div>
     <form>
       <label for="title">Task Name:</label><br>
-      <input type="text" id="title" name="title"><br>
+      <input type="text" id="addTodoTitle" name="title"><br>
       <label for="description">Description:</label><br>
-      <textarea type="text" id="description" name="description" rows="4"></textarea><br>
+      <textarea type="text" id="addTodoDescription" name="description" rows="4"></textarea><br>
       <label for="date">Date:</label><br>
-      <input type="text" id="date" name="date"><br>
-      <button type="button" id="todoSave" data-dismiss="modal">Save</button>
+      <input type="text" id="addTodoDate" name="date"><br>
+      <button type="button" id="addTodoSave" data-dismiss="modal">Save</button>
+    </form>
+  </div>
+</div>
+<!-- The Edit Todo Modal -->
+<div id="editTodoModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="custom-flex">
+      <h2 id="editTodoModalTitle">Edit todo</h2>
+      <span id ="editTodoModalClose" class="close">&times;</span>
+    </div>
+    <form>
+      <label for="title">Task Name:</label><br>
+      <input type="text" id="editTodoTitle" name="title"><br>
+      <label for="description">Description:</label><br>
+      <textarea type="text" id="editTodoDescription" name="description" rows="4"></textarea><br>
+      <label for="date">Date:</label><br>
+      <input type="text" id="editTodoDate" name="date"><br>
+      <button type="button" id="editTodoSave" data-dismiss="modal">Save</button>
     </form>
   </div>
 </div>
