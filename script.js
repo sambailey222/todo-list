@@ -10,16 +10,13 @@ class Todo {
     this.project = project;
     this.description = description;
     this.dueDate = dueDate;
-    // this.notes = notes;
+    this.completed = false;
   }
 
   addTodoToProject() {
     activeProject.todos.push(this);
   }
 
-  removeTodo() {
-
-  }
 }
 
 class Project {
@@ -186,13 +183,31 @@ function displayTodos(project) {
 
     const checkboxImage = document.createElement("img");
     checkboxImage.classList.add("checkbox");
-    checkboxImage.src = "images/blank-check-box.svg";
-    checkboxImage.alt = "check";
+    checkboxImage.id = i;
+    if (activeProject.todos[i].completed) {
+      checkboxImage.src = "images/checkbox.svg";
+      checkboxImage.alt = "checked";
+      todoItem.style.opacity = 0.5;
+    } else {
+      checkboxImage.src = "images/blank-check-box.svg";
+      checkboxImage.alt = "unchecked";
+    }
+    checkboxImage.addEventListener("click", function() {
+      if (activeProject.todos[i].completed) {
+        activeProject.todos[i].completed = false;
+      } else {
+        activeProject.todos[i].completed = true;
+      }
+      displayTodos(activeProject);
+    })
     checkboxColumn.appendChild(checkboxImage);
 
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("col-7", "col-text");
     todoTitle.innerHTML = project.todos[i].title;
+    if (activeProject.todos[i].completed) {
+      todoTitle.style.textDecoration = "line-through";
+    }
     todoItem.appendChild(todoTitle);
 
     const todoDate = document.createElement("div");
