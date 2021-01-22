@@ -223,7 +223,68 @@ function displayTodos(project) {
     editBtn.classList.add("edit");
     editBtn.src = "images/edit.svg";
     editBtn.alt = "edit";
+    editBtn.id = i;
     editBtn.addEventListener("click", function() {
+      // generate a new edit modal, which contains the relevant info
+      const editTodoModal = document.createElement("div");
+      editTodoModal.classList.add("modal");
+
+      const editTodoModalContent = document.createElement("editTodoModalContent");
+      editTodoModalContent.classList.add("modal-content");
+      editTodoModal.appendChild(editTodoModalContent);
+
+      const customFlex = document.createElement("div");
+      customFlex.classList.add("custom-flex");
+      editTodoModalContent.appendChild(customFlex);
+
+      const editTodoModalTitle = document.createElement("h2");
+      editTodoModalTitle.innerHTML = "Edit Todo";
+      customFlex.appendChild(editTodoModalTitle);
+
+      const editTodoModalClose = document.createElement("span");
+      editTodoModalClose.classList.add("close");
+      editTodoModalClose.innerHTML = "&times;";
+      customFlex.appendChild(editTodoModalClose);
+
+      const form = document.createElement("form");
+
+      const titleLabel = document.createElement("label");
+      titleLabel.setAttribute("for", "title");
+      titleLabel.innerHtml = "Task Name:";
+      form.appendChild(titleLabel);
+
+      const br = document.createElement("br");
+      form.appendChild(br);
+
+      const editTodoTitleInput = document.createElement("input");
+      editTodoTitleInput.setAttribute("type", "text");
+      editTodoTitleInput.id = "editTodoTitle";
+      editTodoTitleInput.setAttribute("name", "title");
+      form.appendChild(editTodoTitleInput);
+      form.appendChild(br);
+
+      const descriptionLabel = document.createElement("label");
+      descriptionLabel.setAttribute("for", "description");
+      descriptionLabel.innerHtml = "Description:";
+      form.appendChild(descriptionLabel);
+      form.appendChild(br);
+
+      const editDescriptionInput = document.createElement("textarea");
+      editDescriptionInput.setAttribute("type", "text");
+      editDescriptionInput.id = "editTodoDescription";
+      editDescriptionInput.setAttribute("name", "title");
+      editDescriptionInput.setAttribute("rows", "4");
+      form.appendChild(editDescriptionInput);
+      form.appendChild(br);
+
+      
+
+
+
+
+
+      // add a save button to it that updates the relevant array item only
+      // display todos
       openEditModal();
       const editTodoTitle = document.getElementById("editTodoTitle");
       editTodoTitle.value = activeProject.todos[i].title;
@@ -231,12 +292,14 @@ function displayTodos(project) {
       editTodoDescription.value = activeProject.todos[i].description;
       const editTodoDate = document.getElementById("editTodoDate");
       editTodoDate.value = activeProject.todos[i].dueDate;
-
+      console.log(editBtn.id);
       const editTodoSave = document.getElementById("editTodoSave");
       editTodoSave.addEventListener("click", function() {
-        activeProject.todos[i].title = editTodoTitle.value;
-        activeProject.todos[i].description = editTodoDescription.value;
-        activeProject.todos[i].dueDate = editTodoDate.value;
+        
+        console.log(editBtn.id);
+        activeProject.todos[editBtn.id].title = editTodoTitle.value;
+        activeProject.todos[editBtn.id].description = editTodoDescription.value;
+        activeProject.todos[editBtn.id].dueDate = editTodoDate.value;
         closeEditModal()
         displayTodos(activeProject);
         //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
