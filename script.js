@@ -31,6 +31,213 @@ class Project {
     displayProjects();
   }
 
+  displayTodos() {
+    // change the value of each project's active property so only clicked project is active
+    // may be possible to improve/avoid this loop by just replacing the tab? think about this later
+    // for (let i = 0; i < projects.length; i++) {
+    //   projects[i].active = (i === parseInt(e.target.id));
+    //   console.log(projects[i].active);
+    // }
+  
+  
+    // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
+    // (for the benefit of the addTodo function - so it knows where to save new todo)
+    activeProject = this;
+    const todoList = document.getElementById("todo-list");
+    todoList.innerHTML = "";
+    
+    // build top row with "due date" column
+    const container = document.createElement("div");
+    container.classList.add("container");
+    todoList.appendChild(container);
+  
+    const topRow = document.createElement("div");
+    topRow.classList.add("row");
+    container.appendChild(topRow);
+  
+    const col8 = document.createElement("div");
+    col8.classList.add("col-8");
+    topRow.appendChild(col8);
+  
+    const col4 = document.createElement("div");
+    col4.classList.add("col-4");
+    col4.innerHTML = "Due Date";
+    topRow.appendChild(col4);
+    // lopp through corresponding Todo todos and build a grid item for each one
+    for (let i = 0; i < activeProject.todos.length; i++) {
+      
+      const todoItem = document.createElement("div");
+      todoItem.classList.add("row", "todo-item");
+      container.appendChild(todoItem);
+  
+      const checkboxColumn = document.createElement("div");
+      checkboxColumn.classList.add("col-1", "center");
+      todoItem.appendChild(checkboxColumn);
+  
+      const checkboxImage = document.createElement("img");
+      checkboxImage.classList.add("checkbox");
+      checkboxImage.id = i;
+      if (activeProject.todos[i].completed) {
+        checkboxImage.src = "images/checkbox.svg";
+        checkboxImage.alt = "checked";
+        todoItem.style.opacity = 0.5;
+      } else {
+        checkboxImage.src = "images/blank-check-box.svg";
+        checkboxImage.alt = "unchecked";
+      }
+      checkboxImage.addEventListener("click", function() {
+        if (activeProject.todos[i].completed) {
+          activeProject.todos[i].completed = false;
+        } else {
+          activeProject.todos[i].completed = true;
+        }
+        activeProject.displayTodos();
+      })
+      checkboxColumn.appendChild(checkboxImage);
+  
+      const todoTitle = document.createElement("div");
+      todoTitle.classList.add("col-7", "col-text");
+      todoTitle.innerHTML = activeProject.todos[i].title;
+      if (activeProject.todos[i].completed) {
+        todoTitle.style.textDecoration = "line-through";
+      }
+      todoItem.appendChild(todoTitle);
+  
+      const todoDate = document.createElement("div");
+      todoDate.classList.add("col-2", "col-text");
+      todoDate.innerHTML = activeProject.todos[i].dueDate;
+      todoItem.appendChild(todoDate);
+  
+      const editColumn = document.createElement("div");
+      editColumn.classList.add("col-1", "col-text");
+      todoItem.appendChild(editColumn);
+  
+      const editBtn = document.createElement("img");
+      editBtn.classList.add("edit");
+      editBtn.src = "images/edit.svg";
+      editBtn.alt = "edit";
+      editBtn.id = i;
+      editBtn.addEventListener("click", function() {
+        // generate a new edit modal, which contains the relevant info
+        const editTodoModal = document.createElement("div");
+        editTodoModal.classList.add("modal");
+        editTodoModal.style.display = "block";
+  
+        const editTodoModalContent = document.createElement("editTodoModalContent");
+        editTodoModalContent.classList.add("modal-content");
+        editTodoModal.appendChild(editTodoModalContent);
+  
+        const customFlex = document.createElement("div");
+        customFlex.classList.add("custom-flex");
+        editTodoModalContent.appendChild(customFlex);
+  
+        const editTodoModalTitle = document.createElement("h2");
+        editTodoModalTitle.innerHTML = "Edit Todo";
+        customFlex.appendChild(editTodoModalTitle);
+  
+        const editTodoModalClose = document.createElement("span");
+        editTodoModalClose.classList.add("close");
+        editTodoModalClose.innerHTML = "&times;";
+        function closeEditModal() {
+          editTodoModal.style.display = "none";
+          console.log("fired");
+        }
+        editTodoModalClose.addEventListener("click", () => closeEditModal());
+        customFlex.appendChild(editTodoModalClose);
+  
+        const form = document.createElement("form");
+        editTodoModalContent.appendChild(form);
+  
+        const titleLabel = document.createElement("label");
+        titleLabel.setAttribute("for", "title");
+        titleLabel.innerHTML = "Task Name:";
+        form.appendChild(titleLabel);
+  
+        const br = document.createElement("br");
+        form.appendChild(br);
+  
+        const editTodoTitleInput = document.createElement("input");
+        editTodoTitleInput.setAttribute("type", "text");
+        editTodoTitleInput.id = "editTodoTitle";
+        editTodoTitleInput.setAttribute("name", "title");
+        editTodoTitleInput.value = activeProject.todos[i].title;
+        form.appendChild(editTodoTitleInput);
+        form.appendChild(br);
+  
+        const descriptionLabel = document.createElement("label");
+        descriptionLabel.setAttribute("for", "description");
+        descriptionLabel.innerHTML = "Description:";
+        form.appendChild(descriptionLabel);
+        form.appendChild(br);
+  
+        const editDescriptionInput = document.createElement("textarea");
+        editDescriptionInput.setAttribute("type", "text");
+        editDescriptionInput.id = "editTodoDescription";
+        editDescriptionInput.setAttribute("name", "title");
+        editDescriptionInput.setAttribute("rows", "4");
+        editDescriptionInput.value = activeProject.todos[i].description;
+        form.appendChild(editDescriptionInput);
+        form.appendChild(br);
+  
+        const dateLabel = document.createElement("label");
+        dateLabel.setAttribute("for", "date");
+        dateLabel.innerHTML = "Date:";
+        form.appendChild(dateLabel);
+  
+        form.appendChild(br);
+  
+        const editTodoDateInput = document.createElement("input");
+        editTodoDateInput.setAttribute("type", "text");
+        editTodoDateInput.id = "editTodoDate";
+        editTodoDateInput.setAttribute("name", "date");
+        editTodoDateInput.value = activeProject.todos[i].dueDate;
+        form.appendChild(editTodoDateInput);
+        form.appendChild(br);
+  
+        const editTodoSaveButton = document.createElement("button");
+        editTodoSaveButton.setAttribute("type", "button");
+        editTodoSaveButton.id = "editTodoSave";
+        editTodoSaveButton.innerHTML = "Save";
+        editTodoSaveButton.addEventListener("click", function() {
+          console.log(editBtn.id);
+          console.log(editTodoTitleInput.value)
+          activeProject.todos[editBtn.id].title = editTodoTitleInput.value;
+          console.log(editDescriptionInput.value);
+          activeProject.todos[editBtn.id].description = editDescriptionInput.value;
+          console.log(editTodoDateInput.value);
+          activeProject.todos[editBtn.id].dueDate = editTodoDateInput.value;
+          closeEditModal()
+          activeProject.displayTodos();
+          //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
+        })
+        form.appendChild(editTodoSaveButton);
+  
+        const modalAppend = document.getElementById("modalAppend");
+        modalAppend.appendChild(editTodoModal);
+  
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener("click", function(event) {
+          if (event.target == editTodoModal) {
+          editTodoModal.style.display = "none";
+          }
+        });
+      })
+      editColumn.appendChild(editBtn);
+  
+      const deleteColumn = document.createElement("div");
+      deleteColumn.classList.add("col-1");
+      todoItem.appendChild(deleteColumn);
+  
+      const deleteBtn = document.createElement("img");
+      deleteBtn.classList.add("trash");
+      deleteBtn.src = "images/trash-can.svg";
+      deleteBtn.alt = "delete";
+      deleteBtn.id = i;
+      deleteBtn.addEventListener("click", (e) => deleteTodo(e));
+      deleteColumn.appendChild(deleteBtn);
+    }
+  }
+
   // is there any benefit to using class methods here? 
   // Still going to need an external function that creates the new class and then accesses its methods. 
   // May as well have one external function that does it all?
@@ -59,9 +266,8 @@ const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/
 defaultTodo.addTodoToProject();
 
 const projects = [];
-projects.push(defaultProject);
-displayProjects();
-displayTodos(activeProject);
+defaultProject.addProjectToList();
+defaultProject.displayTodos();
 
 // ------ ADD PROJECT MODAL ------ //
     // Get the modal
@@ -133,228 +339,16 @@ function displayProjects() {
     newProjectTitle.id = i;
     newProjectTitle.innerHTML = projects[i].title;
     console.log(projects[i]);
-    newProjectTitle.addEventListener("click", () => displayTodos(projects[i]));
+    newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
     projectsList.appendChild(newProjectTitle);
   }
 }
 
-function displayTodos(project) {
-  // change the value of each project's active property so only clicked project is active
-  // may be possible to improve/avoid this loop by just replacing the tab? think about this later
-  // for (let i = 0; i < projects.length; i++) {
-  //   projects[i].active = (i === parseInt(e.target.id));
-  //   console.log(projects[i].active);
-  // }
 
-
-  // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
-  // (for the benefit of the addTodo function - so it knows where to save new todo)
-  activeProject = project;
-  const todoList = document.getElementById("todo-list");
-  todoList.innerHTML = "";
-  
-  // build top row with "due date" column
-  const container = document.createElement("div");
-  container.classList.add("container");
-  todoList.appendChild(container);
-
-  const topRow = document.createElement("div");
-  topRow.classList.add("row");
-  container.appendChild(topRow);
-
-  const col8 = document.createElement("div");
-  col8.classList.add("col-8");
-  topRow.appendChild(col8);
-
-  const col4 = document.createElement("div");
-  col4.classList.add("col-4");
-  col4.innerHTML = "Due Date";
-  topRow.appendChild(col4);
-  // lopp through corresponding Todo todos and build a grid item for each one
-  for (let i = 0; i < project.todos.length; i++) {
-    
-    const todoItem = document.createElement("div");
-    todoItem.classList.add("row", "todo-item");
-    container.appendChild(todoItem);
-
-    const checkboxColumn = document.createElement("div");
-    checkboxColumn.classList.add("col-1", "center");
-    todoItem.appendChild(checkboxColumn);
-
-    const checkboxImage = document.createElement("img");
-    checkboxImage.classList.add("checkbox");
-    checkboxImage.id = i;
-    if (activeProject.todos[i].completed) {
-      checkboxImage.src = "images/checkbox.svg";
-      checkboxImage.alt = "checked";
-      todoItem.style.opacity = 0.5;
-    } else {
-      checkboxImage.src = "images/blank-check-box.svg";
-      checkboxImage.alt = "unchecked";
-    }
-    checkboxImage.addEventListener("click", function() {
-      if (activeProject.todos[i].completed) {
-        activeProject.todos[i].completed = false;
-      } else {
-        activeProject.todos[i].completed = true;
-      }
-      displayTodos(activeProject);
-    })
-    checkboxColumn.appendChild(checkboxImage);
-
-    const todoTitle = document.createElement("div");
-    todoTitle.classList.add("col-7", "col-text");
-    todoTitle.innerHTML = project.todos[i].title;
-    if (activeProject.todos[i].completed) {
-      todoTitle.style.textDecoration = "line-through";
-    }
-    todoItem.appendChild(todoTitle);
-
-    const todoDate = document.createElement("div");
-    todoDate.classList.add("col-2", "col-text");
-    todoDate.innerHTML = project.todos[i].dueDate;
-    todoItem.appendChild(todoDate);
-
-    const editColumn = document.createElement("div");
-    editColumn.classList.add("col-1", "col-text");
-    todoItem.appendChild(editColumn);
-
-    const editBtn = document.createElement("img");
-    editBtn.classList.add("edit");
-    editBtn.src = "images/edit.svg";
-    editBtn.alt = "edit";
-    editBtn.id = i;
-    editBtn.addEventListener("click", function() {
-      // generate a new edit modal, which contains the relevant info
-      const editTodoModal = document.createElement("div");
-      editTodoModal.classList.add("modal");
-      editTodoModal.style.display = "block";
-
-      const editTodoModalContent = document.createElement("editTodoModalContent");
-      editTodoModalContent.classList.add("modal-content");
-      editTodoModal.appendChild(editTodoModalContent);
-
-      const customFlex = document.createElement("div");
-      customFlex.classList.add("custom-flex");
-      editTodoModalContent.appendChild(customFlex);
-
-      const editTodoModalTitle = document.createElement("h2");
-      editTodoModalTitle.innerHTML = "Edit Todo";
-      customFlex.appendChild(editTodoModalTitle);
-
-      const editTodoModalClose = document.createElement("span");
-      editTodoModalClose.classList.add("close");
-      editTodoModalClose.innerHTML = "&times;";
-      function closeEditModal() {
-        editTodoModal.style.display = "none";
-        console.log("fired");
-      }
-      editTodoModalClose.addEventListener("click", () => closeEditModal());
-      customFlex.appendChild(editTodoModalClose);
-
-      const form = document.createElement("form");
-      editTodoModalContent.appendChild(form);
-
-      const titleLabel = document.createElement("label");
-      titleLabel.setAttribute("for", "title");
-      titleLabel.innerHTML = "Task Name:";
-      form.appendChild(titleLabel);
-
-      const br = document.createElement("br");
-      form.appendChild(br);
-
-      const editTodoTitleInput = document.createElement("input");
-      editTodoTitleInput.setAttribute("type", "text");
-      editTodoTitleInput.id = "editTodoTitle";
-      editTodoTitleInput.setAttribute("name", "title");
-      editTodoTitleInput.value = activeProject.todos[i].title;
-      form.appendChild(editTodoTitleInput);
-      form.appendChild(br);
-
-      const descriptionLabel = document.createElement("label");
-      descriptionLabel.setAttribute("for", "description");
-      descriptionLabel.innerHTML = "Description:";
-      form.appendChild(descriptionLabel);
-      form.appendChild(br);
-
-      const editDescriptionInput = document.createElement("textarea");
-      editDescriptionInput.setAttribute("type", "text");
-      editDescriptionInput.id = "editTodoDescription";
-      editDescriptionInput.setAttribute("name", "title");
-      editDescriptionInput.setAttribute("rows", "4");
-      editDescriptionInput.value = activeProject.todos[i].description;
-      form.appendChild(editDescriptionInput);
-      form.appendChild(br);
-
-      const dateLabel = document.createElement("label");
-      dateLabel.setAttribute("for", "date");
-      dateLabel.innerHTML = "Date:";
-      form.appendChild(dateLabel);
-
-      form.appendChild(br);
-
-      const editTodoDateInput = document.createElement("input");
-      editTodoDateInput.setAttribute("type", "text");
-      editTodoDateInput.id = "editTodoDate";
-      editTodoDateInput.setAttribute("name", "date");
-      editTodoDateInput.value = activeProject.todos[i].dueDate;
-      form.appendChild(editTodoDateInput);
-      form.appendChild(br);
-
-      const editTodoSaveButton = document.createElement("button");
-      editTodoSaveButton.setAttribute("type", "button");
-      editTodoSaveButton.id = "editTodoSave";
-      editTodoSaveButton.innerHTML = "Save";
-      editTodoSaveButton.addEventListener("click", function() {
-        console.log(editBtn.id);
-        console.log(editTodoTitleInput.value)
-        activeProject.todos[editBtn.id].title = editTodoTitleInput.value;
-        console.log(editDescriptionInput.value);
-        activeProject.todos[editBtn.id].description = editDescriptionInput.value;
-        console.log(editTodoDateInput.value);
-        activeProject.todos[editBtn.id].dueDate = editTodoDateInput.value;
-        closeEditModal()
-        displayTodos(activeProject);
-        //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
-      })
-      form.appendChild(editTodoSaveButton);
-
-      const modalAppend = document.getElementById("modalAppend");
-      modalAppend.appendChild(editTodoModal);
-
-      // When the user clicks anywhere outside of the modal, close it
-      window.addEventListener("click", function(event) {
-        if (event.target == editTodoModal) {
-        editTodoModal.style.display = "none";
-        }
-      });
-      
-
-
-
-
-
-     
-    })
-    editColumn.appendChild(editBtn);
-
-    const deleteColumn = document.createElement("div");
-    deleteColumn.classList.add("col-1");
-    todoItem.appendChild(deleteColumn);
-
-    const deleteBtn = document.createElement("img");
-    deleteBtn.classList.add("trash");
-    deleteBtn.src = "images/trash-can.svg";
-    deleteBtn.alt = "delete";
-    deleteBtn.id = i;
-    deleteBtn.addEventListener("click", (e) => deleteTodo(e));
-    deleteColumn.appendChild(deleteBtn);
-  }
-}
 
 function deleteTodo(e) {
 activeProject.todos.splice(e.target.id, 1);
-displayTodos(activeProject);
+activeProject.displayTodos();
 }
 // projectBtn.addEventListener("click", () => addProject("Work"));
 // projectBtn.addEventListener("click", () => addProject("Work"));
@@ -427,7 +421,7 @@ function createTodo() {
   console.log(newTodo);
   // save new todo into the active project
   newTodo.addTodoToProject();
-  displayTodos(activeProject);
+  activeProject.displayTodos();
   closeTodoModal();
 }
 
