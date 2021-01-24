@@ -32,14 +32,6 @@ class Project {
   }
 
   displayTodos() {
-    // change the value of each project's active property so only clicked project is active
-    // may be possible to improve/avoid this loop by just replacing the tab? think about this later
-    // for (let i = 0; i < projects.length; i++) {
-    //   projects[i].active = (i === parseInt(e.target.id));
-    //   console.log(projects[i].active);
-    // }
-  
-  
     // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
     // (for the benefit of the addTodo function - so it knows where to save new todo)
     activeProject = this;
@@ -117,111 +109,7 @@ class Project {
       editBtn.src = "images/edit.svg";
       editBtn.alt = "edit";
       editBtn.id = i;
-      editBtn.addEventListener("click", function() {
-        // generate a new edit modal, which contains the relevant info
-        const editTodoModal = document.createElement("div");
-        editTodoModal.classList.add("modal");
-        editTodoModal.style.display = "block";
-  
-        const editTodoModalContent = document.createElement("editTodoModalContent");
-        editTodoModalContent.classList.add("modal-content");
-        editTodoModal.appendChild(editTodoModalContent);
-  
-        const customFlex = document.createElement("div");
-        customFlex.classList.add("custom-flex");
-        editTodoModalContent.appendChild(customFlex);
-  
-        const editTodoModalTitle = document.createElement("h2");
-        editTodoModalTitle.innerHTML = "Edit Todo";
-        customFlex.appendChild(editTodoModalTitle);
-  
-        const editTodoModalClose = document.createElement("span");
-        editTodoModalClose.classList.add("close");
-        editTodoModalClose.innerHTML = "&times;";
-        function closeEditModal() {
-          editTodoModal.style.display = "none";
-          console.log("fired");
-        }
-        editTodoModalClose.addEventListener("click", () => closeEditModal());
-        customFlex.appendChild(editTodoModalClose);
-  
-        const form = document.createElement("form");
-        editTodoModalContent.appendChild(form);
-  
-        const titleLabel = document.createElement("label");
-        titleLabel.setAttribute("for", "title");
-        titleLabel.innerHTML = "Task Name:";
-        form.appendChild(titleLabel);
-  
-        const br = document.createElement("br");
-        form.appendChild(br);
-  
-        const editTodoTitleInput = document.createElement("input");
-        editTodoTitleInput.setAttribute("type", "text");
-        editTodoTitleInput.id = "editTodoTitle";
-        editTodoTitleInput.setAttribute("name", "title");
-        editTodoTitleInput.value = activeProject.todos[i].title;
-        form.appendChild(editTodoTitleInput);
-        form.appendChild(br);
-  
-        const descriptionLabel = document.createElement("label");
-        descriptionLabel.setAttribute("for", "description");
-        descriptionLabel.innerHTML = "Description:";
-        form.appendChild(descriptionLabel);
-        form.appendChild(br);
-  
-        const editDescriptionInput = document.createElement("textarea");
-        editDescriptionInput.setAttribute("type", "text");
-        editDescriptionInput.id = "editTodoDescription";
-        editDescriptionInput.setAttribute("name", "title");
-        editDescriptionInput.setAttribute("rows", "4");
-        editDescriptionInput.value = activeProject.todos[i].description;
-        form.appendChild(editDescriptionInput);
-        form.appendChild(br);
-  
-        const dateLabel = document.createElement("label");
-        dateLabel.setAttribute("for", "date");
-        dateLabel.innerHTML = "Date:";
-        form.appendChild(dateLabel);
-  
-        form.appendChild(br);
-  
-        const editTodoDateInput = document.createElement("input");
-        editTodoDateInput.setAttribute("type", "text");
-        editTodoDateInput.id = "editTodoDate";
-        editTodoDateInput.setAttribute("name", "date");
-        editTodoDateInput.value = activeProject.todos[i].dueDate;
-        form.appendChild(editTodoDateInput);
-        form.appendChild(br);
-  
-        const editTodoSaveButton = document.createElement("button");
-        editTodoSaveButton.setAttribute("type", "button");
-        editTodoSaveButton.id = "editTodoSave";
-        editTodoSaveButton.innerHTML = "Save";
-        editTodoSaveButton.addEventListener("click", function() {
-          console.log(editBtn.id);
-          console.log(editTodoTitleInput.value)
-          activeProject.todos[editBtn.id].title = editTodoTitleInput.value;
-          console.log(editDescriptionInput.value);
-          activeProject.todos[editBtn.id].description = editDescriptionInput.value;
-          console.log(editTodoDateInput.value);
-          activeProject.todos[editBtn.id].dueDate = editTodoDateInput.value;
-          closeEditModal()
-          activeProject.displayTodos();
-          //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
-        })
-        form.appendChild(editTodoSaveButton);
-  
-        const modalAppend = document.getElementById("modalAppend");
-        modalAppend.appendChild(editTodoModal);
-  
-        // When the user clicks anywhere outside of the modal, close it
-        window.addEventListener("click", function(event) {
-          if (event.target == editTodoModal) {
-          editTodoModal.style.display = "none";
-          }
-        });
-      })
+      editBtn.addEventListener("click", () => this.editTodo(i))
       editColumn.appendChild(editBtn);
   
       const deleteColumn = document.createElement("div");
@@ -235,6 +123,111 @@ class Project {
       deleteBtn.id = i;
       deleteBtn.addEventListener("click", (e) => deleteTodo(e));
       deleteColumn.appendChild(deleteBtn);
+    }
+  }
+    editTodo(i) {
+      // generate a new edit modal, which contains the relevant info
+      const editTodoModal = document.createElement("div");
+      editTodoModal.classList.add("modal");
+      editTodoModal.style.display = "block";
+
+      const editTodoModalContent = document.createElement("editTodoModalContent");
+      editTodoModalContent.classList.add("modal-content");
+      editTodoModal.appendChild(editTodoModalContent);
+
+      const customFlex = document.createElement("div");
+      customFlex.classList.add("custom-flex");
+      editTodoModalContent.appendChild(customFlex);
+
+      const editTodoModalTitle = document.createElement("h2");
+      editTodoModalTitle.innerHTML = "Edit Todo";
+      customFlex.appendChild(editTodoModalTitle);
+
+      const editTodoModalClose = document.createElement("span");
+      editTodoModalClose.classList.add("close");
+      editTodoModalClose.innerHTML = "&times;";
+      function closeEditModal() {
+        editTodoModal.style.display = "none";
+        console.log("fired");
+      }
+      editTodoModalClose.addEventListener("click", () => closeEditModal());
+      customFlex.appendChild(editTodoModalClose);
+
+      const form = document.createElement("form");
+      editTodoModalContent.appendChild(form);
+
+      const titleLabel = document.createElement("label");
+      titleLabel.setAttribute("for", "title");
+      titleLabel.innerHTML = "Task Name:";
+      form.appendChild(titleLabel);
+
+      const br = document.createElement("br");
+      form.appendChild(br);
+
+      const editTodoTitleInput = document.createElement("input");
+      editTodoTitleInput.setAttribute("type", "text");
+      editTodoTitleInput.id = "editTodoTitle";
+      editTodoTitleInput.setAttribute("name", "title");
+      editTodoTitleInput.value = activeProject.todos[i].title;
+      form.appendChild(editTodoTitleInput);
+      form.appendChild(br);
+
+      const descriptionLabel = document.createElement("label");
+      descriptionLabel.setAttribute("for", "description");
+      descriptionLabel.innerHTML = "Description:";
+      form.appendChild(descriptionLabel);
+      form.appendChild(br);
+
+      const editDescriptionInput = document.createElement("textarea");
+      editDescriptionInput.setAttribute("type", "text");
+      editDescriptionInput.id = "editTodoDescription";
+      editDescriptionInput.setAttribute("name", "title");
+      editDescriptionInput.setAttribute("rows", "4");
+      editDescriptionInput.value = activeProject.todos[i].description;
+      form.appendChild(editDescriptionInput);
+      form.appendChild(br);
+
+      const dateLabel = document.createElement("label");
+      dateLabel.setAttribute("for", "date");
+      dateLabel.innerHTML = "Date:";
+      form.appendChild(dateLabel);
+
+      form.appendChild(br);
+
+      const editTodoDateInput = document.createElement("input");
+      editTodoDateInput.setAttribute("type", "text");
+      editTodoDateInput.id = "editTodoDate";
+      editTodoDateInput.setAttribute("name", "date");
+      editTodoDateInput.value = activeProject.todos[i].dueDate;
+      form.appendChild(editTodoDateInput);
+      form.appendChild(br);
+
+      const editTodoSaveButton = document.createElement("button");
+      editTodoSaveButton.setAttribute("type", "button");
+      editTodoSaveButton.id = "editTodoSave";
+      editTodoSaveButton.innerHTML = "Save";
+      editTodoSaveButton.addEventListener("click", function() {
+        console.log(i);
+        console.log(editTodoTitleInput.value)
+        activeProject.todos[i].title = editTodoTitleInput.value;
+        console.log(editDescriptionInput.value);
+        activeProject.todos[i].description = editDescriptionInput.value;
+        console.log(editTodoDateInput.value);
+        activeProject.todos[i].dueDate = editTodoDateInput.value;
+        closeEditModal()
+        activeProject.displayTodos();
+      })
+      form.appendChild(editTodoSaveButton);
+
+      const modalAppend = document.getElementById("modalAppend");
+      modalAppend.appendChild(editTodoModal);
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.addEventListener("click", function(event) {
+        if (event.target == editTodoModal) {
+        editTodoModal.style.display = "none";
+        }
+      });
     }
   }
 
@@ -252,15 +245,14 @@ class Project {
   // toggle check (complete) todo - within todo (possibly as a property of the object?)
   // if decide against, will need to take addProject back out (or restore from last push);
 
-}
+
 
 // ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
 
 const defaultProject = new Project("Default Project");
 
-let activeProject = "";
-activeProject = defaultProject;
+let activeProject = defaultProject;
 
 const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/02/1993");
 defaultTodo.addTodoToProject();
@@ -335,12 +327,29 @@ function closeProjectsModal() {
 function displayProjects() {
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
+    const newProjectDiv = document.createElement("div");
     const newProjectTitle = document.createElement("h3");
     newProjectTitle.id = i;
     newProjectTitle.innerHTML = projects[i].title;
+    newProjectDiv.appendChild(newProjectTitle);
+    const projectDeleteBtn = document.createElement("img");
+    projectDeleteBtn.src = "images/trash-can.svg";
+    projectDeleteBtn.classList.add("trash");
+    projectDeleteBtn.classList.add("hoverAppear");
+    projectDeleteBtn.style.opacity = 0;
+    // projectDeleteBtn.onmouseover = function() {
+    //   this.style.opacity = 0.5;
+    // };
+    newProjectDiv.classList.add("project-flex");
+    newProjectDiv.addEventListener("mouseover", function() {
+      projectDeleteBtn.style.opacity = 0.5});
+    newProjectDiv.addEventListener("mouseout", function() {
+      projectDeleteBtn.style.opacity = 0;
+    });
+    newProjectDiv.appendChild(projectDeleteBtn);
     console.log(projects[i]);
     newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
-    projectsList.appendChild(newProjectTitle);
+    projectsList.appendChild(newProjectDiv);
   }
 }
 
@@ -425,8 +434,6 @@ function createTodo() {
   closeTodoModal();
 }
 
-// ------ THE EDIT TODO MODAL ----- //
-
 
 // ----- THE ADD TODO MODAL ----- //
   // Get the modal
@@ -445,7 +452,9 @@ function openTodoModal() {
 btn.onclick = () => openTodoModal();
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = () => closeTodoModal();
+
+function closeTodoModal() {
   todoModal.style.display = "none";
 }
 
@@ -461,6 +470,3 @@ const todoSaveBtn = document.getElementById("addTodoSave");
 // create new todo from user input when button clicked
 todoSaveBtn.addEventListener("click", () => createTodo());
 
-function closeTodoModal() {
-  todoModal.style.display = "none";
-}

@@ -137,3 +137,12 @@ input {
 textarea {
   width: 100%;
 }
+
+.project-flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* img:hover {
+  opacity: 0.5 !important;
+} */
