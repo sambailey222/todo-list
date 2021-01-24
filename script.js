@@ -245,6 +245,11 @@ function displayTodos(project) {
       const editTodoModalClose = document.createElement("span");
       editTodoModalClose.classList.add("close");
       editTodoModalClose.innerHTML = "&times;";
+      function closeEditModal() {
+        editTodoModal.style.display = "none";
+        console.log("fired");
+      }
+      editTodoModalClose.addEventListener("click", () => closeEditModal());
       customFlex.appendChild(editTodoModalClose);
 
       const form = document.createElement("form");
@@ -262,6 +267,7 @@ function displayTodos(project) {
       editTodoTitleInput.setAttribute("type", "text");
       editTodoTitleInput.id = "editTodoTitle";
       editTodoTitleInput.setAttribute("name", "title");
+      editTodoTitleInput.value = activeProject.todos[i].title;
       form.appendChild(editTodoTitleInput);
       form.appendChild(br);
 
@@ -276,6 +282,7 @@ function displayTodos(project) {
       editDescriptionInput.id = "editTodoDescription";
       editDescriptionInput.setAttribute("name", "title");
       editDescriptionInput.setAttribute("rows", "4");
+      editDescriptionInput.value = activeProject.todos[i].description;
       form.appendChild(editDescriptionInput);
       form.appendChild(br);
 
@@ -290,6 +297,7 @@ function displayTodos(project) {
       editTodoDateInput.setAttribute("type", "text");
       editTodoDateInput.id = "editTodoDate";
       editTodoDateInput.setAttribute("name", "date");
+      editTodoDateInput.value = activeProject.todos[i].dueDate;
       form.appendChild(editTodoDateInput);
       form.appendChild(br);
 
@@ -297,39 +305,36 @@ function displayTodos(project) {
       editTodoSaveButton.setAttribute("type", "button");
       editTodoSaveButton.id = "editTodoSave";
       editTodoSaveButton.innerHTML = "Save";
+      editTodoSaveButton.addEventListener("click", function() {
+        console.log(editBtn.id);
+        console.log(editTodoTitleInput.value)
+        activeProject.todos[editBtn.id].title = editTodoTitleInput.value;
+        console.log(editDescriptionInput.value);
+        activeProject.todos[editBtn.id].description = editDescriptionInput.value;
+        console.log(editTodoDateInput.value);
+        activeProject.todos[editBtn.id].dueDate = editTodoDateInput.value;
+        closeEditModal()
+        displayTodos(activeProject);
+        //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
+      })
       form.appendChild(editTodoSaveButton);
 
       const modalAppend = document.getElementById("modalAppend");
       modalAppend.appendChild(editTodoModal);
 
-    
+      // When the user clicks anywhere outside of the modal, close it
+      window.addEventListener("click", function(event) {
+        if (event.target == editTodoModal) {
+        editTodoModal.style.display = "none";
+        }
+      });
       
 
 
 
 
 
-      // add a save button to it that updates the relevant array item only
-      // display todos
-      // openEditModal();
-      // const editTodoTitle = document.getElementById("editTodoTitle");
-      // editTodoTitle.value = activeProject.todos[i].title;
-      // const editTodoDescription = document.getElementById("editTodoDescription");
-      // editTodoDescription.value = activeProject.todos[i].description;
-      // const editTodoDate = document.getElementById("editTodoDate");
-      // editTodoDate.value = activeProject.todos[i].dueDate;
-      // console.log(editBtn.id);
-      // const editTodoSave = document.getElementById("editTodoSave");
-      // editTodoSave.addEventListener("click", function() {
-        
-      //   console.log(editBtn.id);
-      //   activeProject.todos[editBtn.id].title = editTodoTitle.value;
-      //   activeProject.todos[editBtn.id].description = editTodoDescription.value;
-      //   activeProject.todos[editBtn.id].dueDate = editTodoDate.value;
-      //   closeEditModal()
-      //   displayTodos(activeProject);
-      //   //FIGURE OUT WHY IT IS OVERWRITING EVERY ARRAY ITEM ON SAVE
-      // })
+     
     })
     editColumn.appendChild(editBtn);
 
