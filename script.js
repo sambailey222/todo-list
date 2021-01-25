@@ -35,6 +35,10 @@ class Project {
     // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
     // (for the benefit of the addTodo function - so it knows where to save new todo)
     activeProject = this;
+
+    const projectTitleDisplay = document.getElementById("project-title");
+    projectTitleDisplay.innerHTML = activeProject.title;
+
     const todoList = document.getElementById("todo-list");
     todoList.innerHTML = "";
     
@@ -295,7 +299,8 @@ function createNewProject(name) {
     // TEMPORARY TEST TODOS ADDED
     newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
     newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
-    newProject.addProjectToList()
+    newProject.addProjectToList();
+    newProject.displayTodos();
     closeProjectsModal();
 }
 
@@ -337,9 +342,30 @@ function displayProjects() {
     projectDeleteBtn.classList.add("trash");
     projectDeleteBtn.classList.add("hoverAppear");
     projectDeleteBtn.style.opacity = 0;
-    // projectDeleteBtn.onmouseover = function() {
-    //   this.style.opacity = 0.5;
-    // };
+    
+    projectDeleteBtn.addEventListener("click", function() {
+      projects.splice(i, 1);
+      
+      // 3 possible scenarios - skip to one before, skip to one after, display blank
+      console.log(projects[i]);
+      console.log(projects);
+      console.log(projects[i-1]);
+      console.log(projects[i+1]);
+      if (projects[i-1]) {
+        activeProject = projects[i - 1];
+        activeProject.displayTodos();
+      } else if (projects[i]) {
+        activeProject = projects[i];
+        activeProject.displayTodos();
+      } else {
+        activeProject = "";
+        const todoList = document.getElementById("todo-list");
+        todoList.innerHTML = "";
+        const projectTitleDisplay = document.getElementById("project-title");
+        projectTitleDisplay.innerHTML = "Todos";    
+      }
+      displayProjects();
+    });
     newProjectDiv.classList.add("project-flex");
     newProjectDiv.addEventListener("mouseover", function() {
       projectDeleteBtn.style.opacity = 0.5});

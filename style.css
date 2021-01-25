@@ -140,9 +140,6 @@ textarea {
 
 .project-flex {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-/* img:hover {
-  opacity: 0.5 !important;
-} */
