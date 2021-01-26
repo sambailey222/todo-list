@@ -97,6 +97,7 @@ class Project {
       if (activeProject.todos[i].completed) {
         todoTitle.style.textDecoration = "line-through";
       }
+      todoTitle.addEventListener("click", () => this.editTodo(i));
       todoItem.appendChild(todoTitle);
   
       const todoDate = document.createElement("div");
@@ -250,6 +251,13 @@ class Project {
   // if decide against, will need to take addProject back out (or restore from last push);
 
 
+  // THINGS THAT STILL NEED TO BE DONE
+  
+  // sort out CSS
+  // add date picker function
+  // add local storage
+  // add firebase backend
+  // refactor code into modules
 
 // ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
@@ -333,7 +341,8 @@ function displayProjects() {
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
     const newProjectDiv = document.createElement("div");
-    const newProjectTitle = document.createElement("h3");
+    const newProjectTitle = document.createElement("h4");
+    newProjectTitle.classList.add("projectTitle")
     newProjectTitle.id = i;
     newProjectTitle.innerHTML = projects[i].title;
     newProjectDiv.appendChild(newProjectTitle);

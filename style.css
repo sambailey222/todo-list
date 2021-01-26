@@ -14,7 +14,8 @@ body {
 }
 
 #header {
-  background-color: lightblue;
+  background-color: rgb(4, 167, 221);
+  padding: 10px;
 }
 
 #interface-container {
@@ -24,8 +25,9 @@ body {
 }
 
 #projects-display {
-  background-color: rgb(60, 202, 60);
+  background-color: rgb(206, 227, 245);
   width: 25%;
+  padding-top: 10px;
 }
 
 #todos-display {
@@ -56,6 +58,7 @@ body {
 .content-wrapper {
   width: 80%;
   margin: auto;
+  margin-top: 10px;
 }
 
 .center {
@@ -130,6 +133,12 @@ body {
   justify-content: space-between;
 }
 
+.custom-flex-margins {
+  display:flex;
+  justify-content: space-between;
+  margin: 5% 5%;
+}
+
 input {
   width: 100%;
 }
@@ -143,3 +152,16 @@ textarea {
   justify-content: space-between;
 }
 
+.add-project-btn {
+  text-align: center;
+  margin: auto;
+}
+
+.projectTitle {
+  margin-left: 12%;
+  font-weight: 400;
+}
+
+.project-heading-container {
+  margin-bottom: 15px;
+}
