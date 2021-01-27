@@ -12,18 +12,15 @@ class Todo {
     this.dueDate = dueDate;
     this.completed = false;
   }
-
   addTodoToProject() {
     activeProject.todos.push(this);
   }
-
 }
 
 class Project {
-  constructor (title) {
+  constructor (title, todos = []) {
     this.title = title;
-    this.todos = [];
-    this.active = false;
+    this.todos = todos;
   }
 
   addProjectToList() {
@@ -130,6 +127,7 @@ class Project {
       deleteColumn.appendChild(deleteBtn);
     }
   }
+
     editTodo(i) {
       // generate a new edit modal, which contains the relevant info
       const editTodoModal = document.createElement("div");
@@ -226,6 +224,7 @@ class Project {
 
       const modalAppend = document.getElementById("modalAppend");
       modalAppend.appendChild(editTodoModal);
+      updateLocalStorage();
 
       // When the user clicks anywhere outside of the modal, close it
       window.addEventListener("click", function(event) {
@@ -235,6 +234,22 @@ class Project {
       });
     }
   }
+
+  function reviveJSON() {
+    for (let i = 0; i < projects.length; i++) {
+      console.log(projects[i]);
+      console.log(projects[i].title);
+      console.log(projects[i].todos);
+      
+      projects[i] = new Project(projects[i].title, projects[i].todos)
+      console.log(projects[i]);
+      
+    }
+    
+    return projects;
+  }
+
+
 
   // is there any benefit to using class methods here? 
   // Still going to need an external function that creates the new class and then accesses its methods. 
@@ -254,6 +269,7 @@ class Project {
   // THINGS THAT STILL NEED TO BE DONE
   
   // sort out CSS
+  // watch local storage thing on treehouse
   // add date picker function
   // add local storage
   // add firebase backend
@@ -269,9 +285,29 @@ let activeProject = defaultProject;
 const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/02/1993");
 defaultTodo.addTodoToProject();
 
-const projects = [];
-defaultProject.addProjectToList();
-defaultProject.displayTodos();
+let projects = [];
+
+function retrieveProjects() {
+  if (localStorage.projects) {
+    projects = JSON.parse(localStorage.projects);
+    projects = reviveJSON();
+    displayProjects();
+  } else {
+    defaultProject.addProjectToList();
+    defaultProject.displayTodos();
+  }
+}
+
+retrieveProjects();
+
+// need to write a function to update the localStorage
+
+function updateLocalStorage() {
+  localStorage.setItem("projects", JSON.stringify(projects));
+}
+  
+
+
 
 // ------ ADD PROJECT MODAL ------ //
     // Get the modal
@@ -340,6 +376,8 @@ function closeProjectsModal() {
 function displayProjects() {
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
+    console.log(projects);
+    console.log(projects[i]);
     const newProjectDiv = document.createElement("div");
     const newProjectTitle = document.createElement("h4");
     newProjectTitle.classList.add("projectTitle")
@@ -354,7 +392,6 @@ function displayProjects() {
     
     projectDeleteBtn.addEventListener("click", function() {
       projects.splice(i, 1);
-      
       // 3 possible scenarios - skip to one before, skip to one after, display blank
       console.log(projects[i]);
       console.log(projects);
@@ -386,6 +423,7 @@ function displayProjects() {
     newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
     projectsList.appendChild(newProjectDiv);
   }
+  updateLocalStorage();
 }
 
 
@@ -393,6 +431,7 @@ function displayProjects() {
 function deleteTodo(e) {
 activeProject.todos.splice(e.target.id, 1);
 activeProject.displayTodos();
+updateLocalStorage();
 }
 // projectBtn.addEventListener("click", () => addProject("Work"));
 // projectBtn.addEventListener("click", () => addProject("Work"));
@@ -467,6 +506,7 @@ function createTodo() {
   newTodo.addTodoToProject();
   activeProject.displayTodos();
   closeTodoModal();
+  updateLocalStorage();
 }
 
 
