@@ -243,9 +243,7 @@ class Project {
       
       projects[i] = new Project(projects[i].title, projects[i].todos)
       console.log(projects[i]);
-      
     }
-    
     return projects;
   }
 
@@ -278,21 +276,24 @@ class Project {
 // ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
 
-const defaultProject = new Project("Default Project");
 
-let activeProject = defaultProject;
-
-const defaultTodo = new Todo("Eat chicken", activeProject.title, "go back", "11/02/1993");
-defaultTodo.addTodoToProject();
 
 let projects = [];
+
+let activeProject = "";
 
 function retrieveProjects() {
   if (localStorage.projects) {
     projects = JSON.parse(localStorage.projects);
     projects = reviveJSON();
     displayProjects();
+    activeProject = projects[0];
+    activeProject.displayTodos();
   } else {
+    const defaultProject = new Project("Default Project");
+    activeProject = defaultProject;
+    const defaultTodo = new Todo("Eat chicken", defaultProject.title, "go back", "11/02/1993");
+    defaultTodo.addTodoToProject();
     defaultProject.addProjectToList();
     defaultProject.displayTodos();
   }
