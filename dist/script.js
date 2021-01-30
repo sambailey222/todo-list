@@ -8,6 +8,7 @@
 // date picker do first
 // also need to sort out problem of being able to add todos to no projectn
 
+
 class Todo {
   constructor (title, project, description, dueDate) {
     this.title = title;
@@ -89,11 +90,11 @@ class Project {
       checkboxImage.classList.add("checkbox");
       checkboxImage.id = i;
       if (activeProject.todos[i].completed) {
-        checkboxImage.src = "images/checkbox.svg";
+        checkboxImage.src = "../images/checkbox.svg";
         checkboxImage.alt = "checked";
         todoItem.style.opacity = 0.5;
       } else {
-        checkboxImage.src = "images/blank-check-box.svg";
+        checkboxImage.src = "../images/blank-check-box.svg";
         checkboxImage.alt = "unchecked";
       }
       checkboxImage.addEventListener("click", function() {
@@ -126,7 +127,7 @@ class Project {
   
       const editBtn = document.createElement("img");
       editBtn.classList.add("edit");
-      editBtn.src = "images/edit.svg";
+      editBtn.src = "../images/edit.svg";
       editBtn.alt = "edit";
       editBtn.id = i;
       editBtn.addEventListener("click", () => this.editTodo(i))
@@ -138,7 +139,7 @@ class Project {
   
       const deleteBtn = document.createElement("img");
       deleteBtn.classList.add("trash");
-      deleteBtn.src = "images/trash-can.svg";
+      deleteBtn.src = "../images/trash-can.svg";
       deleteBtn.alt = "delete";
       deleteBtn.id = i;
       deleteBtn.addEventListener("click", (e) => deleteTodo(e));
@@ -407,7 +408,7 @@ function displayProjects() {
     newProjectTitle.innerHTML = projects[i].title;
     newProjectDiv.appendChild(newProjectTitle);
     const projectDeleteBtn = document.createElement("img");
-    projectDeleteBtn.src = "images/trash-can.svg";
+    projectDeleteBtn.src = "../images/trash-can.svg";
     projectDeleteBtn.classList.add("trash");
     projectDeleteBtn.classList.add("hoverAppear");
     projectDeleteBtn.style.opacity = 0;
