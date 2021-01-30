@@ -1,13 +1,6 @@
-// title, description, dueDate, notes
-// objects to be stored within a project.
-// project going to be an array comprised of objects (the todos)
 
-// start out by creating a basic user interface that allows you to add todos and store them in an array
 
-// webpack should be done last
-// date picker do first
-// also need to sort out problem of being able to add todos to no projectn
-
+import datepicker from '../node_modules/js-datepicker/dist/'
 
 class Todo {
   constructor (title, project, description, dueDate) {
