@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "datepicker": "^0.0.0",
+    "js-datepicker": "^5.18.0",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {

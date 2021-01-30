@@ -1,10 +1,9 @@
-// import datepicker from 'js-datepicker';
 
-// title, description, dueDate, notes
-// objects to be stored within a project.
-// project going to be an array comprised of objects (the todos)
 
-// start out by creating a basic user interface that allows you to add todos and store them in an array
+import datepicker from 'js-datepicker'
+
+
+const picker = datepicker('#add-project');
 
 class Todo {
   constructor (title, project, description, dueDate) {
@@ -30,11 +29,25 @@ class Project {
     displayProjects();
   }
 
+  // addTodoButton() {
+  //   const addTodoBtn = document.createElement("button");
+  //   addTodoBtn.id = "add-todo";
+  //   addTodoBtn.classList.add("todo-button");
+  //   addTodoBtn.innerHTML = "Add Todo";
+  //   const contentWrapper = document.getElementById("content-wrapper");
+  //   const todoList = document.getElementById("todo-list");
+  //   contentWrapper.insertBefore(addTodoBtn, todoList)
+  // }
+
+  // you've made this more complicated than it needs to be
+  // all have to do is set displayValue of addTodo to none when there are no projects
+  // then set it to block or whatever when there are projects
+
   displayTodos() {
     // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
     // (for the benefit of the addTodo function - so it knows where to save new todo)
     activeProject = this;
-
+    // this.addTodoButton();
     const projectTitleDisplay = document.getElementById("project-title");
     projectTitleDisplay.innerHTML = activeProject.title;
 
@@ -289,8 +302,10 @@ function retrieveProjects() {
     projects = JSON.parse(localStorage.projects);
     projects = reviveJSON();
     displayProjects();
-    activeProject = projects[0];
-    activeProject.displayTodos();
+    if (projects[0]) {
+      activeProject = projects[0];
+      activeProject.displayTodos();
+    }
   } else {
     const defaultProject = new Project("Default Project");
     activeProject = defaultProject;
@@ -349,6 +364,7 @@ function createNewProject(name) {
     newProject.addProjectToList();
     newProject.displayTodos();
     closeProjectsModal();
+    toggleAddTodoBtn();
 }
 
 // When user clicks save, add project to projects list
@@ -413,6 +429,7 @@ function displayProjects() {
         const projectTitleDisplay = document.getElementById("project-title");
         projectTitleDisplay.innerHTML = "Todos";    
       }
+      toggleAddTodoBtn();
       displayProjects();
     });
     newProjectDiv.classList.add("project-flex");
@@ -424,6 +441,8 @@ function displayProjects() {
     newProjectDiv.appendChild(projectDeleteBtn);
     console.log(projects[i]);
     newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
+    console.log(projects[i]);
+    // newProjectTitle.addEventListener("click", () => projects[i].addTodoButton());
     projectsList.appendChild(newProjectDiv);
   }
   updateLocalStorage();
@@ -435,6 +454,15 @@ function deleteTodo(e) {
 activeProject.todos.splice(e.target.id, 1);
 activeProject.displayTodos();
 updateLocalStorage();
+}
+
+function toggleAddTodoBtn() {
+  const addTodoButton = document.getElementById("add-todo");
+  if (projects.length === 0) {
+  addTodoButton.style.display = "none";
+  } else {
+  addTodoButton.style.display = "block";
+  }
 }
 // projectBtn.addEventListener("click", () => addProject("Work"));
 // projectBtn.addEventListener("click", () => addProject("Work"));
