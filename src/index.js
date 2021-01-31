@@ -1,9 +1,19 @@
+import format from 'date-fns/format'
 
+var result = format(new Date(2014, 1, 11), 'dd/MM/yyyy')
+console.log(result);
 
 import datepicker from 'js-datepicker'
 
-
-const picker = datepicker('#add-project');
+// let addTodoDate = document.getElementById('addTodoDate');
+const picker = datepicker('#addTodoDate', {
+  formatter: (input, date, instance) => {
+    console.log(date);
+    console.log(date.toLocaleDateString('en-GB'));
+    const value = date.toLocaleDateString('en-GB');
+    input.value = value // => '1/1/2099'
+  }
+});
 
 class Todo {
   constructor (title, project, description, dueDate) {
@@ -86,11 +96,11 @@ class Project {
       checkboxImage.classList.add("checkbox");
       checkboxImage.id = i;
       if (activeProject.todos[i].completed) {
-        checkboxImage.src = "../images/checkbox.svg";
+        checkboxImage.src = "images/checkbox.svg";
         checkboxImage.alt = "checked";
         todoItem.style.opacity = 0.5;
       } else {
-        checkboxImage.src = "../images/blank-check-box.svg";
+        checkboxImage.src = "images/blank-check-box.svg";
         checkboxImage.alt = "unchecked";
       }
       checkboxImage.addEventListener("click", function() {
@@ -123,7 +133,7 @@ class Project {
   
       const editBtn = document.createElement("img");
       editBtn.classList.add("edit");
-      editBtn.src = "../images/edit.svg";
+      editBtn.src = "images/edit.svg";
       editBtn.alt = "edit";
       editBtn.id = i;
       editBtn.addEventListener("click", () => this.editTodo(i))
@@ -135,7 +145,7 @@ class Project {
   
       const deleteBtn = document.createElement("img");
       deleteBtn.classList.add("trash");
-      deleteBtn.src = "../images/trash-can.svg";
+      deleteBtn.src = "images/trash-can.svg";
       deleteBtn.alt = "delete";
       deleteBtn.id = i;
       deleteBtn.addEventListener("click", (e) => deleteTodo(e));
@@ -404,7 +414,7 @@ function displayProjects() {
     newProjectTitle.innerHTML = projects[i].title;
     newProjectDiv.appendChild(newProjectTitle);
     const projectDeleteBtn = document.createElement("img");
-    projectDeleteBtn.src = "../images/trash-can.svg";
+    projectDeleteBtn.src = "images/trash-can.svg";
     projectDeleteBtn.classList.add("trash");
     projectDeleteBtn.classList.add("hoverAppear");
     projectDeleteBtn.style.opacity = 0;
@@ -531,6 +541,7 @@ function createTodo() {
   let todoDesc = document.getElementById("addTodoDescription");
   let todoDate = document.getElementById("addTodoDate");
   // create new todo with user input
+  // todoDate.value = format(new Date(2021, 01, 31), 'dd/MM/yyy');
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
   console.log(newTodo);
   // save new todo into the active project
