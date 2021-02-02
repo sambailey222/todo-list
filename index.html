@@ -28,7 +28,7 @@
           <h2>Projects</h2>
           </div>
           <div class="col-5 add-project-btn">
-          <button id="add-project">Add Project</button>
+          <button id="add-project" class="pep">Add Project</button>
           </div>
         </div>
       </div>
@@ -97,7 +97,7 @@
   <!-- Modal content -->
   <div class="modal-content">
     <div class="custom-flex">
-      <h2 id="todoModalTitle">Add todo</h2>
+      <h2 id="todoModalTitle" class="pep">Add todo</h2>
       <span id ="modalClose" class="close">&times;</span>
     </div>
     <form>
@@ -106,7 +106,7 @@
       <label for="description">Description:</label><br>
       <textarea type="text" id="addTodoDescription" name="description" rows="4"></textarea><br>
       <label for="date">Date:</label><br>
-      <input type="text" id="addTodoDate" name="date" value="2021-01-31" min="2021-01-31" max="2024-12-31">
+      <input type="date" id="addTodoDate" name="date" value="2021-01-31" min="2021-01-31" max="2024-12-31">
       <button type="button" id="addTodoSave" data-dismiss="modal">Save</button>
     </form>
   </div>
