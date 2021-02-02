@@ -6,14 +6,30 @@ console.log(result);
 import datepicker from 'js-datepicker'
 
 // let addTodoDate = document.getElementById('addTodoDate');
-const picker = datepicker('#addTodoDate', {
-  formatter: (input, date, instance) => {
-    console.log(date);
-    console.log(date.toLocaleDateString('en-GB'));
-    const value = date.toLocaleDateString('en-GB');
-    input.value = value // => '1/1/2099'
-  }
-});
+// const addTodoDate = document.getElementById("addTodoDate");
+// const picker = datepicker(addTodoDate, {
+//   formatter: (input, date, instance) => {
+//     console.log(addTodoDate);
+//     console.log(date);
+//     console.log(date.toLocaleDateString('en-GB'));
+//     const value = date.toLocaleDateString('en-GB');
+//     input.value = value // => '1/1/2099'
+//   }
+// });
+let date = "2021-02-19"
+function reformatDate(date) {
+  const year = date.slice(0, 4);
+  console.log(year);
+  const month = date.slice(5, 7);
+  console.log(month);
+  const day = date.slice(8, 10);
+  console.log(day);
+  const newDate = `${day}-${month}-${year}`;
+  console.log(newDate);
+  return newDate;
+}
+
+reformatDate(date);
 
 class Todo {
   constructor (title, project, description, dueDate) {
@@ -27,6 +43,15 @@ class Todo {
     activeProject.todos.push(this);
   }
 }
+
+
+// function addEditDatePicker() {
+//   const editTodoDate = document.getElementById("editTodoDate");
+  
+//   console.log(editTodoDate);
+
+//   editTodoDate.addEventListener("click", () => datepicker(editTodoDate));
+// }
 
 class Project {
   constructor (title, todos = []) {
@@ -124,7 +149,7 @@ class Project {
   
       const todoDate = document.createElement("div");
       todoDate.classList.add("col-2", "col-text");
-      todoDate.innerHTML = activeProject.todos[i].dueDate;
+      todoDate.innerHTML = reformatDate(activeProject.todos[i].dueDate);
       todoItem.appendChild(todoDate);
   
       const editColumn = document.createElement("div");
@@ -223,12 +248,13 @@ class Project {
       form.appendChild(br);
 
       const editTodoDateInput = document.createElement("input");
-      editTodoDateInput.setAttribute("type", "text");
+      editTodoDateInput.setAttribute("type", "date");
       editTodoDateInput.id = "editTodoDate";
       editTodoDateInput.setAttribute("name", "date");
       editTodoDateInput.value = activeProject.todos[i].dueDate;
       form.appendChild(editTodoDateInput);
       form.appendChild(br);
+      
 
       const editTodoSaveButton = document.createElement("button");
       editTodoSaveButton.setAttribute("type", "button");
@@ -257,8 +283,19 @@ class Project {
         editTodoModal.style.display = "none";
         }
       });
+      // const editTodoTest = document.querySelector("#editTodoDate");
+      // console.log(document.body.contains(editTodoTest));
+      // const pickBoy = datepicker(editTodoTest);
     }
   }
+
+  function callbackDatePicker(node) {
+    console.log(node);
+    console.log(node.parentNode.nodeName);
+    datepicker(node)
+  }
+  
+  
 
   function reviveJSON() {
     for (let i = 0; i < projects.length; i++) {
