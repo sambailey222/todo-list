@@ -261,15 +261,15 @@ class Project {
       editTodoSaveButton.id = "editTodoSave";
       editTodoSaveButton.innerHTML = "Save";
       editTodoSaveButton.addEventListener("click", function() {
-        console.log(i);
-        console.log(editTodoTitleInput.value)
+        if (editTodoTitleInput.value === "") {
+            alertNoTitleInput(editTodoTitleInput);
+        } else {
         activeProject.todos[i].title = editTodoTitleInput.value;
-        console.log(editDescriptionInput.value);
         activeProject.todos[i].description = editDescriptionInput.value;
-        console.log(editTodoDateInput.value);
         activeProject.todos[i].dueDate = editTodoDateInput.value;
         closeEditModal()
         activeProject.displayTodos();
+        }
       })
       form.appendChild(editTodoSaveButton);
 
@@ -579,6 +579,9 @@ function createTodo() {
   let todoDate = document.getElementById("addTodoDate");
   // create new todo with user input
   // todoDate.value = format(new Date(2021, 01, 31), 'dd/MM/yyy');
+  if (todoTitle.value === "") {
+    alertNoTitleInput(todoTitle);
+  } else {
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
   console.log(newTodo);
   // save new todo into the active project
@@ -586,6 +589,11 @@ function createTodo() {
   activeProject.displayTodos();
   closeTodoModal();
   updateLocalStorage();
+  }
+}
+
+function alertNoTitleInput(input) {
+  input.placeholder = "You must enter a title.";
 }
 
 
