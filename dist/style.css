@@ -48,7 +48,7 @@ body {
 
 .checkbox {
   width: 1.5em;
-  padding-top: 1px;
+  padding-top: 3px;
 }
 
 .todo-item {
@@ -166,4 +166,63 @@ textarea {
 
 .project-heading-container {
   margin-bottom: 15px;
+}
+
+.project-input {
+  font-size: 30px;
+}
+
+.todoDateInput {
+  margin-bottom: 20px;
+}
+
+.descriptionLabel {
+  margin-bottom: 2px;
+}
+
+.col-7 {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 600px) {
+  h2 {
+    font-size: 1em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  button {
+    font-size: 0.8em;
+  }
+
+  .modal-content {
+    width: 100%;
+  }
+
+  .row>* {
+    padding-left: 1%;
+    font-size: 0.75em;
+  }
+
+  .col-7 {
+    padding-left: 5%;
+  }
+
+  .col-2 {
+    display: none;
+  }
+
+  .col-1 {
+    padding-left: 5%;
+  }
+
+  .container {
+    margin-top: 25px;
+  }
+
+  .dueDateColumn {
+    display: none;
+  }
 }

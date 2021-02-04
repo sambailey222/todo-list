@@ -1,22 +1,14 @@
-import format from 'date-fns/format'
+// tidy up code
+// consider adding firebase support
 
-var result = format(new Date(2014, 1, 11), 'dd/MM/yyyy')
-console.log(result);
+function getTodaysDate() {
+const field = document.querySelector('#addTodoDate');
+const date = new Date();
+// Set the date
+field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
+    '-' + date.getDate().toString().padStart(2, 0);
+}
 
-import datepicker from 'js-datepicker'
-
-// let addTodoDate = document.getElementById('addTodoDate');
-// const addTodoDate = document.getElementById("addTodoDate");
-// const picker = datepicker(addTodoDate, {
-//   formatter: (input, date, instance) => {
-//     console.log(addTodoDate);
-//     console.log(date);
-//     console.log(date.toLocaleDateString('en-GB'));
-//     const value = date.toLocaleDateString('en-GB');
-//     input.value = value // => '1/1/2099'
-//   }
-// });
-let date = "2021-02-19"
 function reformatDate(date) {
   const year = date.slice(0, 4);
   console.log(year);
@@ -29,7 +21,7 @@ function reformatDate(date) {
   return newDate;
 }
 
-reformatDate(date);
+
 
 class Todo {
   constructor (title, project, description, dueDate) {
@@ -44,15 +36,6 @@ class Todo {
   }
 }
 
-
-// function addEditDatePicker() {
-//   const editTodoDate = document.getElementById("editTodoDate");
-  
-//   console.log(editTodoDate);
-
-//   editTodoDate.addEventListener("click", () => datepicker(editTodoDate));
-// }
-
 class Project {
   constructor (title, todos = []) {
     this.title = title;
@@ -64,25 +47,12 @@ class Project {
     displayProjects();
   }
 
-  // addTodoButton() {
-  //   const addTodoBtn = document.createElement("button");
-  //   addTodoBtn.id = "add-todo";
-  //   addTodoBtn.classList.add("todo-button");
-  //   addTodoBtn.innerHTML = "Add Todo";
-  //   const contentWrapper = document.getElementById("content-wrapper");
-  //   const todoList = document.getElementById("todo-list");
-  //   contentWrapper.insertBefore(addTodoBtn, todoList)
-  // }
 
-  // you've made this more complicated than it needs to be
-  // all have to do is set displayValue of addTodo to none when there are no projects
-  // then set it to block or whatever when there are projects
 
   displayTodos() {
     // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
     // (for the benefit of the addTodo function - so it knows where to save new todo)
     activeProject = this;
-    // this.addTodoButton();
     const projectTitleDisplay = document.getElementById("project-title");
     projectTitleDisplay.innerHTML = activeProject.title;
 
@@ -104,6 +74,7 @@ class Project {
   
     const col4 = document.createElement("div");
     col4.classList.add("col-4");
+    col4.classList.add("dueDateColumn");
     col4.innerHTML = "Due Date";
     topRow.appendChild(col4);
     // lopp through corresponding Todo todos and build a grid item for each one
@@ -178,7 +149,7 @@ class Project {
     }
   }
 
-    editTodo(i) {
+  editTodo(i) {
       // generate a new edit modal, which contains the relevant info
       const editTodoModal = document.createElement("div");
       editTodoModal.classList.add("modal");
@@ -251,11 +222,11 @@ class Project {
       editTodoDateInput.setAttribute("type", "date");
       editTodoDateInput.id = "editTodoDate";
       editTodoDateInput.setAttribute("name", "date");
+      editTodoDateInput.classList.add("todoDateInput");
       editTodoDateInput.value = activeProject.todos[i].dueDate;
       form.appendChild(editTodoDateInput);
       form.appendChild(br);
       
-
       const editTodoSaveButton = document.createElement("button");
       editTodoSaveButton.setAttribute("type", "button");
       editTodoSaveButton.id = "editTodoSave";
@@ -283,67 +254,24 @@ class Project {
         editTodoModal.style.display = "none";
         }
       });
-      // const editTodoTest = document.querySelector("#editTodoDate");
-      // console.log(document.body.contains(editTodoTest));
-      // const pickBoy = datepicker(editTodoTest);
-    }
+    } // ---- / editTodo function ----- //
   }
-
-  function callbackDatePicker(node) {
-    console.log(node);
-    console.log(node.parentNode.nodeName);
-    datepicker(node)
-  }
-  
-  
 
   function reviveJSON() {
     for (let i = 0; i < projects.length; i++) {
-      console.log(projects[i]);
-      console.log(projects[i].title);
-      console.log(projects[i].todos);
-      
       projects[i] = new Project(projects[i].title, projects[i].todos)
-      console.log(projects[i]);
     }
     return projects;
   }
 
-
-
-  // is there any benefit to using class methods here? 
-  // Still going to need an external function that creates the new class and then accesses its methods. 
-  // May as well have one external function that does it all?
-  // May be more elegant design to have the methods though
-  // a method should surely be something that is done to the individual object, rather than all of them.
-  // here is where functionality should be stored:
-  // add to projects list - within project DONE
-  // remove project - either within or without project
-  // add todo to project- within todo DONE
-  // edit todo - within todo
-  // delete - either within or without
-  // toggle check (complete) todo - within todo (possibly as a property of the object?)
-  // if decide against, will need to take addProject back out (or restore from last push);
-
-
-  // THINGS THAT STILL NEED TO BE DONE
-  
-  // sort out CSS
-  // watch local storage thing on treehouse
-  // add date picker function
-  // add local storage
-  // add firebase backend
-  // refactor code into modules
-
 // ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
-
-
 
 let projects = [];
 
 let activeProject = "";
 
+// retrieve projects from local storage on startup
 function retrieveProjects() {
   if (localStorage.projects) {
     projects = JSON.parse(localStorage.projects);
@@ -352,6 +280,8 @@ function retrieveProjects() {
     if (projects[0]) {
       activeProject = projects[0];
       activeProject.displayTodos();
+    } else {
+      toggleAddTodoBtn();
     }
   } else {
     const defaultProject = new Project("Default Project");
@@ -365,15 +295,12 @@ function retrieveProjects() {
 
 retrieveProjects();
 
-// need to write a function to update the localStorage
 
+// update local storage when a change is made
 function updateLocalStorage() {
   localStorage.setItem("projects", JSON.stringify(projects));
 }
   
-
-
-
 // ------ ADD PROJECT MODAL ------ //
     // Get the modal
 const projectsModal = document.getElementById("projectsModal");
@@ -404,14 +331,18 @@ window.addEventListener("click", function(event) {
 const projectTitle = document.getElementById("projectTitle");
 
 function createNewProject(name) {
+  if (projectTitle.value === "") {
+    alertNoTitleInput(projectTitle);
+  } else {
   const newProject = new Project(name);
     // TEMPORARY TEST TODOS ADDED
-    newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
-    newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
+    newProject.todos.push(new Todo("log in", "Work", "log on to PC", "2021-02-02"))
+    newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "2021-02-02"))
     newProject.addProjectToList();
     newProject.displayTodos();
     closeProjectsModal();
     toggleAddTodoBtn();
+  }
 }
 
 // When user clicks save, add project to projects list
@@ -423,20 +354,6 @@ function closeProjectsModal() {
 }
 
 // -------- END ADD PROJECTS MODAL ------- //
-
-// FUNCTION TO INITIALISE NEW PROJECT OBJECT
-// function addProject(name) {
-//   console.log(name);
-//   const newProject = new Project(name);
-//   // TEMPORARY TEST TODO ADDED
-//   newProject.todos.push(new Todo("log in", "Work", "log on to PC", "14/01/2021"))
-//   newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "14/01/2021"))
-//   projects.push(newProject);
-//   this.displayProjects();
-//   closeProjectsModal();
-// }
-
-
 
 // DISPLAY THE PROJECTS
 function displayProjects() {
@@ -456,29 +373,7 @@ function displayProjects() {
     projectDeleteBtn.classList.add("hoverAppear");
     projectDeleteBtn.style.opacity = 0;
     
-    projectDeleteBtn.addEventListener("click", function() {
-      projects.splice(i, 1);
-      // 3 possible scenarios - skip to one before, skip to one after, display blank
-      console.log(projects[i]);
-      console.log(projects);
-      console.log(projects[i-1]);
-      console.log(projects[i+1]);
-      if (projects[i-1]) {
-        activeProject = projects[i - 1];
-        activeProject.displayTodos();
-      } else if (projects[i]) {
-        activeProject = projects[i];
-        activeProject.displayTodos();
-      } else {
-        activeProject = "";
-        const todoList = document.getElementById("todo-list");
-        todoList.innerHTML = "";
-        const projectTitleDisplay = document.getElementById("project-title");
-        projectTitleDisplay.innerHTML = "Todos";    
-      }
-      toggleAddTodoBtn();
-      displayProjects();
-    });
+    projectDeleteBtn.addEventListener("click", () => deleteProject(i));
     newProjectDiv.classList.add("project-flex");
     newProjectDiv.addEventListener("mouseover", function() {
       projectDeleteBtn.style.opacity = 0.5});
@@ -486,15 +381,35 @@ function displayProjects() {
       projectDeleteBtn.style.opacity = 0;
     });
     newProjectDiv.appendChild(projectDeleteBtn);
-    console.log(projects[i]);
+    
     newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
-    console.log(projects[i]);
-    // newProjectTitle.addEventListener("click", () => projects[i].addTodoButton());
     projectsList.appendChild(newProjectDiv);
   }
   updateLocalStorage();
 }
 
+function deleteProject(i) {
+  // remove the selected project
+  projects.splice(i, 1);
+  // 3 possible scenarios on deletion - skip to project before, skip to one after, display blank if no projects left
+  if (projects[i-1]) {
+    activeProject = projects[i - 1];
+    activeProject.displayTodos();
+  } else if (projects[i]) {
+    activeProject = projects[i];
+    activeProject.displayTodos();
+  } else {
+    activeProject = "";
+    const todoList = document.getElementById("todo-list");
+    todoList.innerHTML = "";
+    const projectTitleDisplay = document.getElementById("project-title");
+    projectTitleDisplay.innerHTML = "Todos";    
+  }
+  // remove the option to add todos if there are no projects
+  toggleAddTodoBtn();
+  // display the projects (or lackthereof)
+  displayProjects();
+}
 
 
 function deleteTodo(e) {
@@ -502,6 +417,7 @@ activeProject.todos.splice(e.target.id, 1);
 activeProject.displayTodos();
 updateLocalStorage();
 }
+
 
 function toggleAddTodoBtn() {
   const addTodoButton = document.getElementById("add-todo");
@@ -511,11 +427,7 @@ function toggleAddTodoBtn() {
   addTodoButton.style.display = "block";
   }
 }
-// projectBtn.addEventListener("click", () => addProject("Work"));
-// projectBtn.addEventListener("click", () => addProject("Work"));
 
-// need to write a function that creates a modal for project name input
-// when click save, add project is run.
 
 // ------ EDIT TODO MODAL ------ //
     // Get the modal
@@ -610,6 +522,8 @@ var span = document.getElementById("modalClose");
 // When the user clicks on the button, open the modal
 function openTodoModal() {
   todoModal.style.display = "block";
+  // set default date input to today
+  getTodaysDate();
 }
 btn.onclick = () => openTodoModal();
 
