@@ -24,11 +24,11 @@
     <div id="projects-display">
       <div class="container project-heading-container">
         <div class="row">
-          <div class="col-7">
-          <h2>Projects</h2>
+          <div class="col-sm-7">
+          <h2 id="projects-heading">Projects</h2>
           </div>
-          <div class="col-5 add-project-btn">
-          <button id="add-project" class="pep">Add Project</button>
+          <div class="col-sm-5 add-project-btn">
+          <button id="add-project" class="pep rounded">Add Project</button>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
     <div id="todos-display">
       <div id="content-wrapper" class="content-wrapper">
       <h2 id="project-title" class="display-inline">Todos</h2>
-      <button id="add-todo" class="todo-button">Add Todo</button>
+      <button id="add-todo" class="todo-button rounded">Add Todo</button>
 
       <div id="todo-list">
         <!-- <div class="container">
@@ -103,11 +103,11 @@
     <form>
       <label for="title">Task Name:</label><br>
       <input type="text" id="addTodoTitle" name="title"><br>
-      <label for="description">Description:</label><br>
+      <label for="description" class="descriptionLabel">Description:</label><br>
       <textarea type="text" id="addTodoDescription" name="description" rows="4"></textarea><br>
       <label for="date">Date:</label><br>
-      <input type="date" id="addTodoDate" name="date" value="2021-01-31" min="2021-01-31" max="2024-12-31">
-      <button type="button" id="addTodoSave" data-dismiss="modal">Save</button>
+      <input type="date" id="addTodoDate" name="date"  class="todoDateInput" value="2021-01-31" min="2021-01-31" max="2028-12-31">
+      <button type="button" id="addTodoSave" data-dismiss="modal" class="rounded">Save</button>
     </form>
   </div>
 </div>
@@ -127,7 +127,7 @@
       <textarea type="text" id="editTodoDescription" name="description" rows="4"></textarea><br>
       <label for="date">Date:</label><br>
       <input type="text" id="editTodoDate" name="date"><br>
-      <button type="button" id="editTodoSave">Save</button>
+      <button type="button" id="editTodoSave" class="rounded">Save</button>
     </form>
   </div>
 </div>
@@ -139,10 +139,11 @@
       <h2>Add Project</h2>
       <span id ="projectModalClose" class="close">&times;</span>
     </div>
+    <br>
     <form>
-      <label for="projectTitle">Project Name:</label><br>
-      <input type="text" id="projectTitle" name="projectTitle"><br>
-      <button type="button" id="projectSave">Save</button>
+      <label for="projectTitle">Project Title:</label><br>
+      <input type="text" id="projectTitle" name="projectTitle" class="project-input"><br><br>
+      <button type="button" id="projectSave" class="rounded">Save</button>
     </form>
   </div>
 
