@@ -1,5 +1,4 @@
-// tidy up code
-// consider adding firebase support
+// CALENDAR FUNCTIONS
 
 function getTodaysDate() {
 const field = document.querySelector('#addTodoDate');
@@ -21,7 +20,7 @@ function reformatDate(date) {
   return newDate;
 }
 
-
+// CLASSES
 
 class Todo {
   constructor (title, project, description, dueDate) {
@@ -47,10 +46,8 @@ class Project {
     displayProjects();
   }
 
-
-
   displayTodos() {
-    // MAKE THE CLICKED PROJECT THE ACTIVE PROJECT
+    // Make the clicked project the active project
     // (for the benefit of the addTodo function - so it knows where to save new todo)
     activeProject = this;
     const projectTitleDisplay = document.getElementById("project-title");
@@ -259,12 +256,7 @@ class Project {
     } // ---- / editTodo function ----- //
   }
 
-  function reviveJSON() {
-    for (let i = 0; i < projects.length; i++) {
-      projects[i] = new Project(projects[i].title, projects[i].todos)
-    }
-    return projects;
-  }
+  
 
 // ------ INITIAL SETUP OF DEFAULTS ------ //
 const projectsList = document.getElementById("projects-list");
@@ -273,18 +265,30 @@ let projects = [];
 
 let activeProject = "";
 
+//restore the JSON from localStorage into class syntax
+function reviveJSON(projects) {
+  for (let i = 0; i < projects.length; i++) {
+    projects[i] = new Project(projects[i].title, projects[i].todos)
+  }
+  return projects;
+}
+
 // retrieve projects from local storage on startup
 function retrieveProjects() {
+  // if local storage is not empty, revive the JSON and display
   if (localStorage.projects) {
     projects = JSON.parse(localStorage.projects);
-    projects = reviveJSON();
+    projects = reviveJSON(projects);
     displayProjects();
+    // if projects array contains a project, initialise as the active project
     if (projects[0]) {
       activeProject = projects[0];
       activeProject.displayTodos();
+      // otherwise remove user ability to add todos
     } else {
       toggleAddTodoBtn();
     }
+  // add a default project
   } else {
     const defaultProject = new Project("Default Project");
     activeProject = defaultProject;
@@ -296,7 +300,6 @@ function retrieveProjects() {
 }
 
 retrieveProjects();
-
 
 // update local storage when a change is made
 function updateLocalStorage() {
@@ -333,9 +336,11 @@ window.addEventListener("click", function(event) {
 const projectTitle = document.getElementById("projectTitle");
 
 function createNewProject(name) {
+  // alert if no title input
   if (projectTitle.value === "") {
     alertNoTitleInput(projectTitle);
   } else {
+    // else create a new project
   const newProject = new Project(name);
     // TEMPORARY TEST TODOS ADDED
     newProject.todos.push(new Todo("log in", "Work", "log on to PC", "2021-02-02"))
@@ -343,6 +348,7 @@ function createNewProject(name) {
     newProject.addProjectToList();
     newProject.displayTodos();
     closeProjectsModal();
+    // add todo button back to DOM, if missing
     toggleAddTodoBtn();
   }
 }
@@ -361,20 +367,20 @@ function closeProjectsModal() {
 function displayProjects() {
   projectsList.innerHTML = "";
   for (let i = 0; i < projects.length; i++) {
-    console.log(projects);
-    console.log(projects[i]);
+    // build a new project div for each project
     const newProjectDiv = document.createElement("div");
     const newProjectTitle = document.createElement("h4");
     newProjectTitle.classList.add("projectTitle")
     newProjectTitle.id = i;
     newProjectTitle.innerHTML = projects[i].title;
     newProjectDiv.appendChild(newProjectTitle);
+
+    // add button to delete projects that only appears on hover
     const projectDeleteBtn = document.createElement("img");
     projectDeleteBtn.src = "images/trash-can.svg";
     projectDeleteBtn.classList.add("trash");
     projectDeleteBtn.classList.add("hoverAppear");
     projectDeleteBtn.style.opacity = 0;
-    
     projectDeleteBtn.addEventListener("click", () => deleteProject(i));
     newProjectDiv.classList.add("project-flex");
     newProjectDiv.addEventListener("mouseover", function() {
@@ -413,14 +419,6 @@ function deleteProject(i) {
   displayProjects();
 }
 
-
-function deleteTodo(e) {
-activeProject.todos.splice(e.target.id, 1);
-activeProject.displayTodos();
-updateLocalStorage();
-}
-
-
 function toggleAddTodoBtn() {
   const addTodoButton = document.getElementById("add-todo");
   if (projects.length === 0) {
@@ -437,15 +435,10 @@ function toggleAddTodoBtn() {
     
     // Get the <span> element that closes the modal
     const editTodoModalClose = document.getElementById("editTodoModalClose");
-
-    function openEditModal() {
-      editTodoModal.style.display = "block";
-    }
     
     // When the user clicks on <span> (x), close the modal
     function closeEditModal() {
       editTodoModal.style.display = "none";
-      console.log("fired");
     }
     editTodoModalClose.onclick = () => closeEditModal();
     
@@ -458,46 +451,17 @@ function toggleAddTodoBtn() {
 
 
 
-// when I push the new project button, 
-  // a new project object should be created with desired name, 
-  // the new project object should be pushed to the projects array,
-  // the new project should be listed on the left hand menu
-  // the right hand menu should change to a new "tab"
-  // the tab should list all the todos saved in that project
-
-// when I click on a project name
-  // all other projects' active property should be set to "false"
-  // the project's active status should be changed to "true"
-  // the right hand menu should change to a new "tab"
-  // that tab should display all of the todos stored in the active project's todos list.
-
-// when I click on the Add Todo button within a project
-  // a modal window should pop up
-  // within that modal window I should be able to add the name, dueDate, notes relating to a Todo
-  // there should be a save button and a close button
-  // when I click save, the todo should be stored in the relevant array and displayed to the page
-  // if I fail to add a title before clicking save, I should be alerted that I cannot save before adding one.
-
-
-// first write a function that simply logs the input values when you press save
-// think bootstrap is fucking with this process and clearing the console.
-// may need to change class names to get away from bootstrap??
-
-
-
 // CREATE A NEW TODO FROM USER INPUT AND REDISPLAY ALL TODOS
 function createTodo() {
   // get user input value boxes
   let todoTitle = document.getElementById("addTodoTitle");
   let todoDesc = document.getElementById("addTodoDescription");
   let todoDate = document.getElementById("addTodoDate");
-  // create new todo with user input
-  // todoDate.value = format(new Date(2021, 01, 31), 'dd/MM/yyy');
   if (todoTitle.value === "") {
     alertNoTitleInput(todoTitle);
   } else {
+  // create a new todo from user input
   const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
-  console.log(newTodo);
   // save new todo into the active project
   newTodo.addTodoToProject();
   activeProject.displayTodos();
@@ -506,20 +470,25 @@ function createTodo() {
   }
 }
 
+function deleteTodo(e) {
+  activeProject.todos.splice(e.target.id, 1);
+  activeProject.displayTodos();
+  updateLocalStorage();
+  }
+  
 function alertNoTitleInput(input) {
   input.placeholder = "You must enter a title.";
 }
 
-
 // ----- THE ADD TODO MODAL ----- //
   // Get the modal
-var todoModal = document.getElementById("addTodoModal");
+const todoModal = document.getElementById("addTodoModal");
 
 // Get the button that opens the modal
-var btn = document.getElementById("add-todo");
+const addTodoBtn = document.getElementById("add-todo");
 
 // Get the <span> element that closes the modal
-var span = document.getElementById("modalClose");
+const closeAddTodoSpan = document.getElementById("modalClose");
 
 // When the user clicks on the button, open the modal
 function openTodoModal() {
@@ -527,10 +496,11 @@ function openTodoModal() {
   // set default date input to today
   getTodaysDate();
 }
-btn.onclick = () => openTodoModal();
+
+addTodoBtn.onclick = () => openTodoModal();
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = () => closeTodoModal();
+closeAddTodoSpan.onclick = () => closeTodoModal();
 
 function closeTodoModal() {
   todoModal.style.display = "none";
@@ -548,3 +518,7 @@ const todoSaveBtn = document.getElementById("addTodoSave");
 // create new todo from user input when button clicked
 todoSaveBtn.addEventListener("click", () => createTodo());
 
+// need to think about how to organise this into a file structure
+// consider IIFE's?
+// will need to write all the different import statements carefully
+// look at how other odin people have done it
