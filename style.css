@@ -154,6 +154,10 @@ textarea {
   justify-content: space-between;
 }
 
+.project-flex:hover {
+  background-color: #45d0fa;
+}
+
 .add-project-btn {
   text-align: center;
   margin: auto;
