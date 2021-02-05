@@ -192,6 +192,7 @@ class Project {
       editTodoTitleInput.setAttribute("type", "text");
       editTodoTitleInput.id = "editTodoTitle";
       editTodoTitleInput.setAttribute("name", "title");
+      editTodoTitleInput.classList.add("todo-title");
       editTodoTitleInput.value = activeProject.todos[i].title;
       form.appendChild(editTodoTitleInput);
       form.appendChild(br);
@@ -230,6 +231,7 @@ class Project {
       const editTodoSaveButton = document.createElement("button");
       editTodoSaveButton.setAttribute("type", "button");
       editTodoSaveButton.id = "editTodoSave";
+      editTodoSaveButton.classList.add("rounded");
       editTodoSaveButton.innerHTML = "Save";
       editTodoSaveButton.addEventListener("click", function() {
         if (editTodoTitleInput.value === "") {
