@@ -1,28 +1,6 @@
-// CALENDAR FUNCTIONS
-
-function getTodaysDate() {
-const field = document.querySelector('#addTodoDate');
-const date = new Date();
-// Set the date
-field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
-    '-' + date.getDate().toString().padStart(2, 0);
-}
-
-function reformatDate(date) {
-  const year = date.slice(0, 4);
-  console.log(year);
-  const month = date.slice(5, 7);
-  console.log(month);
-  const day = date.slice(8, 10);
-  console.log(day);
-  const newDate = `${day}-${month}-${year}`;
-  console.log(newDate);
-  return newDate;
-}
-
 // CLASSES
 
-class Todo {
+export class Todo {
   constructor (title, project, description, dueDate) {
     this.title = title;
     this.project = project;
@@ -256,6 +234,30 @@ class Project {
     } // ---- / editTodo function ----- //
   }
 
+  // CREATE A NEW TODO FROM USER INPUT AND REDISPLAY ALL TODOS
+function createTodo() {
+  // get user input value boxes
+  let todoTitle = document.getElementById("addTodoTitle");
+  let todoDesc = document.getElementById("addTodoDescription");
+  let todoDate = document.getElementById("addTodoDate");
+  if (todoTitle.value === "") {
+    alertNoTitleInput(todoTitle);
+  } else {
+  // create a new todo from user input
+  const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
+  // save new todo into the active project
+  newTodo.addTodoToProject();
+  activeProject.displayTodos();
+  closeTodoModal();
+  updateLocalStorage();
+  }
+}
+
+function deleteTodo(e) {
+  activeProject.todos.splice(e.target.id, 1);
+  activeProject.displayTodos();
+  updateLocalStorage();
+  }
   
 
 // ------ INITIAL SETUP OF DEFAULTS ------ //
@@ -273,7 +275,7 @@ function reviveJSON(projects) {
   return projects;
 }
 
-// retrieve projects from local storage on startup
+// retrieve projects from local storage
 function retrieveProjects() {
   // if local storage is not empty, revive the JSON and display
   if (localStorage.projects) {
@@ -292,13 +294,13 @@ function retrieveProjects() {
   } else {
     const defaultProject = new Project("Default Project");
     activeProject = defaultProject;
-    const defaultTodo = new Todo("Eat chicken", defaultProject.title, "go back", "11/02/1993");
+    const defaultTodo = new Todo("Default Todo", defaultProject.title, "go back", "2021-03-01");
     defaultTodo.addTodoToProject();
     defaultProject.addProjectToList();
     defaultProject.displayTodos();
   }
 }
-
+// run on startup
 retrieveProjects();
 
 // update local storage when a change is made
@@ -310,17 +312,17 @@ function updateLocalStorage() {
     // Get the modal
 const projectsModal = document.getElementById("projectsModal");
 
-// Get the button that opens the modal
+// Get the button that opens the projects modal
 const projectBtn = document.getElementById("add-project");
 
-// Get the <span> element that closes the modal
+// Get the <span> element that closes the projects modal
 const projectClose = document.getElementById("projectModalClose");
 
-// When the user clicks on the button, open the modal
+// When the user clicks on the button, open the projects modal
 projectBtn.addEventListener("click", function() {  
   projectsModal.style.display = "block";});
 
-// When the user clicks on <span> (x), close the modal
+// When the user clicks on <span> (x), close the projects modal
 projectClose.onclick = function() {
   projectsModal.style.display = "none";
 }
@@ -343,8 +345,7 @@ function createNewProject(name) {
     // else create a new project
   const newProject = new Project(name);
     // TEMPORARY TEST TODOS ADDED
-    newProject.todos.push(new Todo("log in", "Work", "log on to PC", "2021-02-02"))
-    newProject.todos.push(new Todo("rama", "krishna", "log on to PC", "2021-02-02"))
+    newProject.todos.push(new Todo("Add a new Todo to this project", activeProject.title, "Use the button above", "2021-02-02"))
     newProject.addProjectToList();
     newProject.displayTodos();
     closeProjectsModal();
@@ -390,7 +391,7 @@ function displayProjects() {
     });
     newProjectDiv.appendChild(projectDeleteBtn);
     
-    newProjectTitle.addEventListener("click", () => projects[i].displayTodos());
+    newProjectDiv.addEventListener("click", () => projects[i].displayTodos());
     projectsList.appendChild(newProjectDiv);
   }
   updateLocalStorage();
@@ -449,33 +450,6 @@ function toggleAddTodoBtn() {
       }
     });
 
-
-
-// CREATE A NEW TODO FROM USER INPUT AND REDISPLAY ALL TODOS
-function createTodo() {
-  // get user input value boxes
-  let todoTitle = document.getElementById("addTodoTitle");
-  let todoDesc = document.getElementById("addTodoDescription");
-  let todoDate = document.getElementById("addTodoDate");
-  if (todoTitle.value === "") {
-    alertNoTitleInput(todoTitle);
-  } else {
-  // create a new todo from user input
-  const newTodo = new Todo (todoTitle.value, activeProject.title, todoDesc.value, todoDate.value);
-  // save new todo into the active project
-  newTodo.addTodoToProject();
-  activeProject.displayTodos();
-  closeTodoModal();
-  updateLocalStorage();
-  }
-}
-
-function deleteTodo(e) {
-  activeProject.todos.splice(e.target.id, 1);
-  activeProject.displayTodos();
-  updateLocalStorage();
-  }
-  
 function alertNoTitleInput(input) {
   input.placeholder = "You must enter a title.";
 }
@@ -518,7 +492,21 @@ const todoSaveBtn = document.getElementById("addTodoSave");
 // create new todo from user input when button clicked
 todoSaveBtn.addEventListener("click", () => createTodo());
 
-// need to think about how to organise this into a file structure
-// consider IIFE's?
-// will need to write all the different import statements carefully
-// look at how other odin people have done it
+// --- / ADD TODO MODAL --- //
+
+// CALENDAR FUNCTIONS
+function getTodaysDate() {
+  const field = document.querySelector('#addTodoDate');
+  const date = new Date();
+  // Set the date
+  field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
+      '-' + date.getDate().toString().padStart(2, 0);
+  }
+  
+  function reformatDate(date) {
+    const year = date.slice(0, 4);
+    const month = date.slice(5, 7);
+    const day = date.slice(8, 10);
+    const newDate = `${day}-${month}-${year}`;
+    return newDate;
+  }
