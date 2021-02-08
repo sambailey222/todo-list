@@ -147,7 +147,6 @@ class Project {
       editTodoModalClose.innerHTML = "&times;";
       function closeEditModal() {
         editTodoModal.style.display = "none";
-        console.log("fired");
       }
       editTodoModalClose.addEventListener("click", () => closeEditModal());
       customFlex.appendChild(editTodoModalClose);
@@ -428,27 +427,6 @@ function toggleAddTodoBtn() {
   addTodoButton.style.display = "block";
   }
 }
-
-
-// ------ EDIT TODO MODAL ------ //
-    // Get the modal
-    const editTodoModal = document.getElementById("editTodoModal");
-    
-    // Get the <span> element that closes the modal
-    const editTodoModalClose = document.getElementById("editTodoModalClose");
-    
-    // When the user clicks on <span> (x), close the modal
-    function closeEditModal() {
-      editTodoModal.style.display = "none";
-    }
-    editTodoModalClose.onclick = () => closeEditModal();
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.addEventListener("click", function(event) {
-      if (event.target == editTodoModal) {
-        editTodoModal.style.display = "none";
-      }
-    });
 
 function alertNoTitleInput(input) {
   input.placeholder = "You must enter a title.";
